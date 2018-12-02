@@ -1,0 +1,21 @@
+= Boost C++ Libraries Statistics
+:copyright: Copyright 2018 Rene Rivera
+:author: Rene Rivera
+:email: grafikrobot@gmail.com
+:reproducible:
+:nofooter:
+:sectanchors:
+:sectnums:
+:sectnumlevels: 5
+:source-highlighter: highlightjs
+:source-language: c++
+:toc: left
+:toclevels: 2
+:caution-caption: ⚑
+:important-caption: ‼
+:note-caption: ℹ
+:tip-caption: ☀
+:warning-caption: ⚠
+:CPP: C++
+:PP: ++
+:P: +
