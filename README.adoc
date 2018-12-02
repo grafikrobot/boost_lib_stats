@@ -1,0 +1,4 @@
+= Boost C++ Libraries Statistics
+
+The goal of this project is to produce current and historical statistics of the
+Boost C++ Libraries.
