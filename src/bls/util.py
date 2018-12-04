@@ -35,7 +35,7 @@ class Commands():
         if self.args.trace:
             print('EXEC: "' + '" "'.join(command) + '"')
         if not self.args.debug:
-            return check_output(command)
+            return check_output(command).decode('utf8')
         else:
             return ""
 
