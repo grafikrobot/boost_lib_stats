@@ -5,6 +5,7 @@
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 """
 import argparse
+import json
 import os
 import os.path
 import re
@@ -42,6 +43,17 @@ class Commands():
     def __re_search__(self, p, s, default=None):
         s = re.search(p, s)
         return s.group(1) if s else default
+
+    def __load_data__(self, json_file):
+        with open(json_file, "r") as f:
+            return json.load(f)
+
+    def __save_data__(self, json_file, data):
+        json_out = json.dumps(
+            data, sort_keys=True, indent=2, separators=(',', ': '))
+        with open(json_file, "w") as f:
+            f.write(json_out)
+        return json_out
 
 
 class Main(Commands):
