@@ -15,6 +15,8 @@ from subprocess import check_call, call, check_output
 class Commands():
     def __init__(self):
         self.args = argparse.Namespace()
+        self.args.trace = False
+        self.args.debug = False
 
     def __check_call__(self, command):
         if self.args.trace:
@@ -51,8 +53,9 @@ class Commands():
     def __save_data__(self, json_file, data):
         json_out = json.dumps(
             data, sort_keys=True, indent=2, separators=(',', ': '))
-        with open(json_file, "w") as f:
-            f.write(json_out)
+        if not self.args.debug:
+            with open(json_file, "w") as f:
+                f.write(json_out)
         return json_out
 
 

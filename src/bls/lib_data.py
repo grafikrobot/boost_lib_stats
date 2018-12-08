@@ -85,8 +85,6 @@ class LibraryData(Commands):
                 if len(deps) == 0:
                     lib_level['libs'].add(lib)
             if len(lib_level['libs']) == 0:
-                # We have a cycle at this level. The cycle will be the items
-                # with only one dependency.
                 lib_level['is_cycle'] = True
                 lib_cycle_deps = {}
                 for lib, deps in lib_deps.items():
@@ -107,9 +105,10 @@ class LibraryData(Commands):
                     deps.discard(lib)
             if self.args.trace:
                 pprint(lib_level)
+            lib_level['libs'] = sorted(list(lib_level['libs']))
             lib_levels.append(lib_level)
         if self.args.debug:
-            print('RANKS:')
+            print('RANKS INFO:')
             pprint(lib_levels)
         self.ranks_info = lib_levels
 
@@ -121,5 +120,8 @@ class LibraryData(Commands):
                 sort_keys=True,
                 indent=2,
                 separators=(',', ': '))
-            print('RANKS:')
+            print('RANKS INFO:')
             print(json_out)
+
+    def save_rank_info(self, ranks_info_file):
+        return self.__save_data__(ranks_info_file, self.ranks_info)
