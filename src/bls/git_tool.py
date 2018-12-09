@@ -30,3 +30,11 @@ class Git(Commands):
         self.__git__('submodule', 'update', '--init', '--no-fetch',
                      '--checkout', '--force', '--recursive')
         self.__git__('clean', '-dxff')
+
+    def clone_all(self, url, dir):
+        self.__git__('clone', '--recurse-submodules', '--', url, dir)
+
+    def fetch_all(self, dir):
+        with PushDir(dir):
+            self.__git__('fetch', '--all', '--prune', '--tags',
+                         '--recurse-submodules')
