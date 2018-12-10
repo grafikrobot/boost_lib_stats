@@ -13,6 +13,7 @@ from bls.util import Main, PushDir
 class CIBuild(Main):
     def __init_parser__(self, parser):
         parser.add_argument('++bin-dir')
+        parser.add_argument('++local', action='store_true')
 
     def __run__(self):
         bin_dir = None
@@ -32,9 +33,10 @@ class CIBuild(Main):
             clone_boost_py = os.path.join(script_dir, 'clone_boost.py')
             git_switch_py = os.path.join(script_dir, 'git_switch.py')
 
-            self.__check_call__(
-                [clone_boost_py,
-                 '++root=%s' % (boost_root_dir)])
+            if not self.args.local:
+                self.__check_call__(
+                    [clone_boost_py,
+                     '++root=%s' % (boost_root_dir)])
             self.__check_call__([
                 git_switch_py,
                 '++root=%s' % (boost_root_dir), '++branch=develop'
