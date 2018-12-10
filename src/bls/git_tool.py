@@ -23,10 +23,14 @@ class Git(Commands):
     def status(self):
         self.__git_sub__('status', '-bsu', '--ignored')
 
-    def switch(self, branch):
+    def clean(self):
         self.__git_sub__('clean', '-dxff')
+
+    def switch(self, branch):
+        self.clean()
         self.__git_sub__('reset', '--hard')
         self.__git__('checkout', branch)
+        self.__git__('merge', 'FETCH_HEAD')
         self.__git__('submodule', 'update', '--init', '--no-fetch',
                      '--checkout', '--force', '--recursive')
         self.__git__('clean', '-dxff')

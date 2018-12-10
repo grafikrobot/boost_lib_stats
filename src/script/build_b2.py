@@ -5,7 +5,7 @@
     Boost Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 """
-from bls.build_tools import BuildBoostDep
+from bls.build_tools import BuildB2
 
 if __name__ == "__main__":
-    BuildBoostDep()
+    BuildB2()
