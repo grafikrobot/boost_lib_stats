@@ -27,4 +27,4 @@ before_cache:
   - ./src/script/git_switch.py ++root=${HOME}/devcache/boost_lib_stats/boost_root ++branch=develop
 cache:
   directories:
-    -$HOME/devcache
+    - $HOME/devcache
