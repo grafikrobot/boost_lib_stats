@@ -17,31 +17,26 @@ class LibraryData(Commands):
         self.dependency_info = {}
         self.ranks_info = []
 
-    def gen_dependency_info(self,
-                            bin_root,
-                            boost_root,
-                            boostdep_exe='boostdep'):
+    def gen_dependency_info(self, boost_root, boostdep_exe='boostdep'):
         self.dependency_info = {}
-        with PushDir(bin_root) as bin_root:
-            boostdep = os.path.join(bin_root, boostdep_exe)
         with PushDir(boost_root):
-            for lib in self.__check_output__([boostdep,
+            for lib in self.__check_output__([boostdep_exe,
                                               '--list-modules']).split():
                 self.dependency_info[lib] = {
                     'buildable': False,
                     'header_deps': None
                 }
-            for lib in self.__check_output__([boostdep,
-                                              '--list-buildable']).split():
+            for lib in self.__check_output__(
+                [boostdep_exe, '--list-buildable']).split():
                 self.dependency_info[lib]['buildable'] = True
             for lib, deps in self.__parse_deps_output__(
-                    self.__check_output__([boostdep,
-                                           '--list-dependencies'])).items():
+                    self.__check_output__(
+                        [boostdep_exe, '--list-dependencies'])).items():
                 self.dependency_info[lib]['header_deps'] = sorted(list(deps))
             for lib, deps in self.__parse_deps_output__(
-                    self.__check_output__(
-                        [boostdep, '--track-sources',
-                         '--list-dependencies'])).items():
+                    self.__check_output__([
+                        boostdep_exe, '--track-sources', '--list-dependencies'
+                    ])).items():
                 self.dependency_info[lib]['source_deps'] = sorted(
                     list(deps - set(self.dependency_info[lib]['header_deps'])))
 
@@ -72,7 +67,7 @@ class LibraryData(Commands):
         for lib, info in self.dependency_info.items():
             deps = set(info['header_deps'])
             if buildable:
-                deps = deps + set(info['source_deps'])
+                deps.update(info['source_deps'])
             lib_deps[lib] = deps
         lib_levels = []
         while len(lib_deps) > 0:

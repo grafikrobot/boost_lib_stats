@@ -30,9 +30,10 @@ class Git(Commands):
         self.clean()
         self.__git_sub__('reset', '--hard')
         self.__git__('checkout', branch)
-        self.__git__('merge', 'FETCH_HEAD')
+        self.__git__('reset', '--hard')
         self.__git__('submodule', 'update', '--init', '--no-fetch',
                      '--checkout', '--force', '--recursive')
+        self.__git_sub__('reset', '--hard')
         self.__git__('clean', '-dxff')
 
     def clone_all(self, url, dir):

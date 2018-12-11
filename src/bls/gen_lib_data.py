@@ -13,12 +13,12 @@ class GenerateLibDepencyData(Main):
     def __init_parser__(self, parser):
         parser.add_argument('++boost-root')
         parser.add_argument('++json')
+        parser.add_argument('++boostdep')
 
     def __run__(self):
         lib_data = LibraryData(self.args)
-        with PushDir('bin') as bin:
-            bin_root = bin
-        lib_data.gen_dependency_info(bin_root, self.args.boost_root)
+        lib_data.gen_dependency_info(
+            self.args.boost_root, boostdep_exe=self.args.boostdep)
         if self.args.json:
             json_out = lib_data.save_dependency_info(self.args.json)
             if self.args.trace:

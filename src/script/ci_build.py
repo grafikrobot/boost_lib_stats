@@ -22,15 +22,16 @@ class CIBuild(Main):
 
         with PushDir(self.args.bin_dir) as dir:
             bin_dir = dir
-        with PushDir(os.path.join(bin_dir, 'boost_root')) as dir:
-            boost_root_dir = dir
+            boost_root_dir = os.path.join(bin_dir, 'boost_root')
         with PushDir('src', 'script') as dir:
             script_dir = dir
 
-        with PushDir('.') as root:
+        with PushDir('.'):
             build_b2_py = os.path.join(script_dir, 'build_b2.py')
             build_bdep_py = os.path.join(script_dir, 'build_boostdep.py')
             clone_boost_py = os.path.join(script_dir, 'clone_boost.py')
+            gen_lib_deps_py = os.path.join(script_dir, 'gen_lib_deps.py')
+            gen_lib_ranks_py = os.path.join(script_dir, 'gen_lib_ranks.py')
             git_switch_py = os.path.join(script_dir, 'git_switch.py')
 
             if not self.args.local:
@@ -51,6 +52,42 @@ class CIBuild(Main):
                 '++boost-root=%s' % (boost_root_dir),
                 '++bin=%s' % (bin_dir)
             ])
+
+            def gen_lib_data(branch, rebuild=False):
+                with PushDir(bin_dir, 'data') as data_dir:
+                    deps_file = os.path.join(data_dir,
+                                             '%s-deps.json' % (branch))
+                    ranks_headers_file = os.path.join(
+                        data_dir, '%s-ranks-headers.json' % (branch))
+                    ranks_build_file = os.path.join(
+                        data_dir, '%s-ranks-build.json' % (branch))
+                if rebuild or not os.path.exists(deps_file):
+                    self.__check_call__([
+                        git_switch_py,
+                        '++root=%s' % (boost_root_dir),
+                        '++branch=%s' % (branch)
+                    ])
+                    self.__check_call__([
+                        gen_lib_deps_py,
+                        '++boost-root=%s' % (boost_root_dir),
+                        '++json=%s' % (deps_file),
+                        '++boostdep=%s' % (os.path.join(bin_dir, 'boostdep'))
+                    ])
+                    self.__check_call__([
+                        gen_lib_ranks_py,
+                        '++lib-info=%s' % (deps_file),
+                        '++json=%s' % (ranks_headers_file)
+                    ])
+                    self.__check_call__([
+                        gen_lib_ranks_py,
+                        '++lib-info=%s' % (deps_file),
+                        '++json=%s' % (ranks_build_file), '++buildable'
+                    ])
+
+            gen_lib_data('develop', rebuild=True)
+            gen_lib_data('master', rebuild=True)
+            for v in range(58, 68 + 1):
+                gen_lib_data('boost-1.%s.0' % (v))
 
 
 if __name__ == "__main__":
