@@ -22,3 +22,9 @@ jobs:
     - stage: website update
       script:
         - echo "Nothing"
+before_cache:
+  - export PYTHONPATH=${PWD}/src
+  - ./src/script/git_switch.py ++root=${HOME}/devcache/boost_lib_stats/boost_root ++branch=develop
+cache:
+  directories:
+    -$HOME/devcache
