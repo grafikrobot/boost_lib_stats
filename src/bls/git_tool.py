@@ -28,13 +28,12 @@ class Git(Commands):
 
     def switch(self, branch):
         self.clean()
-        self.__git_sub__('reset', '--hard')
-        self.__git__('checkout', branch)
+        self.__git__('checkout', '--force', branch)
         self.__git__('reset', '--hard')
         self.__git__('submodule', 'update', '--init', '--no-fetch',
                      '--checkout', '--force', '--recursive')
         self.__git_sub__('reset', '--hard')
-        self.__git__('clean', '-dxff')
+        self.__git_sub__('clean', '-dxff')
 
     def clone_all(self, url, dir):
         self.__git__('clone', '--recurse-submodules', '--', url, dir)

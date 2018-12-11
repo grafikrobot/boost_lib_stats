@@ -35,12 +35,13 @@ class CIBuild(Main):
             git_switch_py = os.path.join(script_dir, 'git_switch.py')
 
             if not self.args.local:
-                self.__check_call__(
-                    [clone_boost_py,
-                     '++root=%s' % (boost_root_dir)])
+                self.__check_call__([
+                    clone_boost_py,
+                    '++root=%s' % (boost_root_dir), '++trace'
+                ])
             self.__check_call__([
                 git_switch_py,
-                '++root=%s' % (boost_root_dir), '++branch=develop'
+                '++root=%s' % (boost_root_dir), '++branch=develop', '++trace'
             ])
             self.__check_call__([
                 build_b2_py,
@@ -86,7 +87,7 @@ class CIBuild(Main):
 
             gen_lib_data('develop', rebuild=True)
             gen_lib_data('master', rebuild=True)
-            for v in range(58, 68 + 1):
+            for v in range(57, 68 + 1):
                 gen_lib_data('boost-1.%s.0' % (v))
 
 
