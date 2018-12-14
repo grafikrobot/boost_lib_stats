@@ -29,7 +29,7 @@ class Git(Commands):
     def switch(self, branch):
         self.clean()
         self.__git__('checkout', '-q', '--force', branch)
-        self.__git__('reset', '-q', '--hard')
+        self.__git_sub__('reset', '-q', '--hard')
         self.__git__('merge', '-q', '--ff-only', 'origin')
         self.__git__('submodule', '--quiet', 'update', '--init', '--no-fetch',
                      '--checkout', '--force', '--recursive')
