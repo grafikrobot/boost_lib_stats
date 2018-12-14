@@ -18,7 +18,7 @@ class Git(Commands):
 
     def __git_sub__(self, *cmd):
         self.__git__(*cmd)
-        self.__git__('submodule', 'foreach', 'git', *cmd)
+        self.__git__('submodule', '--quite', 'foreach', 'git', *cmd)
 
     def status(self):
         self.__git_sub__('status', '-bsu', '--ignored')
@@ -28,11 +28,12 @@ class Git(Commands):
 
     def switch(self, branch):
         self.clean()
-        self.__git__('checkout', '--force', branch)
-        self.__git__('reset', '--hard')
-        self.__git__('submodule', 'update', '--init', '--no-fetch',
+        self.__git__('checkout', '-q', '--force', branch)
+        self.__git__('reset', '-q', '--hard')
+        self.__git__('pull', '-q', '--ff-only')
+        self.__git__('submodule', '--quite', 'update', '--init', '--no-fetch',
                      '--checkout', '--force', '--recursive')
-        self.__git_sub__('reset', '--hard')
+        self.__git_sub__('reset', '-q', '--hard')
         self.__git_sub__('clean', '-dxff')
 
     def clone_all(self, url, dir):
