@@ -30,7 +30,7 @@ class Git(Commands):
         self.clean()
         self.__git__('checkout', '-q', '--force', branch)
         self.__git__('reset', '-q', '--hard')
-        self.__git__('pull', '-q', '--ff-only')
+        self.__git__('merge', '-q', '--ff-only', 'FETCH_HEAD')
         self.__git__('submodule', '--quiet', 'update', '--init', '--no-fetch',
                      '--checkout', '--force', '--recursive')
         self.__git_sub__('reset', '-q', '--hard')
