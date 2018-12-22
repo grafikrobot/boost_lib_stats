@@ -15,13 +15,18 @@ stages:
   - name: website update
 jobs:
   include:
-    - stage: build
+    - stage: build data
       script:
+        - gem install asciidoctor
         - export PYTHONPATH=${PWD}/src
-        - ./src/script/ci_build.py ++bin-dir=${HOME}/devcache/boost_lib_stats
+        - ./src/script/ci_build.py ++bin-dir=${HOME}/devcache/boost_lib_stats ++build-data
     - stage: website update
       script:
-        - echo "Nothing"
+        - gem install asciidoctor
+        - export PYTHONPATH=${PWD}/src
+        - ./src/script/ci_build.py ++bin-dir=${HOME}/devcache/boost_lib_stats ++website-update
+        - git config user.email "bls-bot"
+        - git config user.name "bls-bot"
 before_cache:
   - export PYTHONPATH=${PWD}/src
   - ./src/script/git_switch.py ++root=${HOME}/devcache/boost_lib_stats/boost_root ++branch=develop

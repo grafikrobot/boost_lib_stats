@@ -14,6 +14,8 @@ class CIBuild(Main):
     def __init_parser__(self, parser):
         parser.add_argument('++bin-dir')
         parser.add_argument('++local', action='store_true')
+        parser.add_argument('++build-data', action='store_true')
+        parser.add_argument('++website-update', action='store_true')
 
     def __run__(self):
         bin_dir = None
@@ -91,15 +93,17 @@ class CIBuild(Main):
                         '++json=%s' % (ranks_build_file), '++buildable'
                     ])
 
-            gen_lib_data(branch='develop', rebuild=True)
-            gen_lib_data(branch='master', rebuild=True)
-            for v in range(57, 69 + 1):
-                gen_lib_data(tag='boost-1.%s.0' % (v))
+            if self.args.build_data:
+                gen_lib_data(branch='develop', rebuild=True)
+                gen_lib_data(branch='master', rebuild=True)
+                for v in range(57, 69 + 1):
+                    gen_lib_data(tag='boost-1.%s.0' % (v))
 
-            self.__check_call__([
-                b2_exe, '-d+2',
-                '--data-dir=%s' % (data_dir), '--versions=57-69,master,develop'
-            ])
+            if self.args.website_update:
+                self.__check_call__([
+                    b2_exe, '-d+2',
+                    '--data-dir=%s' % (data_dir), '--versions=57-69,master,develop'
+                ])
 
 
 if __name__ == "__main__":
