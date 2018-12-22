@@ -2,12 +2,12 @@
 :copyright: Copyright 2018 Rene Rivera
 :author: Rene Rivera
 :email: grafikrobot@gmail.com
+:revdate: {docdate}
 :reproducible:
 :nofooter:
 :sectanchors:
 :sectnums:
 :sectnumlevels: 5
-:source-highlighter: highlightjs
 :source-language: c++
 :toc: left
 :toclevels: 2
@@ -19,3 +19,73 @@
 :CPP: C++
 :PP: ++
 :P: +
+
+ifdef::backend-html5[]
+++++
+<script src="echarts.min.js"></script>
+++++
+endif::[]
+
+== Introduction
+
+This document represents a collection of possibly relevant and interesting
+graphs and statistics about the Boost C++ Libraries collection. The goal is
+to shed light on the past and current state of the libraries with the hope
+of spurring improvements in the improvement of the collection as a whole.
+And to try and do that with some interesting and fun visualizations.
+
+The data is frequently update, usually daily, to reflect current state of
+development along side the historical development. Most of the data only
+goes back to release 1.57.0 (November 3rd, 2014) as the introspection tools
+only deal with the modular arrangement of the libraries.
+
+== Dependency Cycles
+
+This shows both
+the total number of cycles in the Boost libraries ("Cycles")
+and
+the total number of libraries that are involved in cycles ("Libs In Cycles")
+for each release.
+
+++++
+<div id="cycles_chart" style="height: 500px;"></div>
+<script type="text/javascript">
+var cycles_chart = echarts.init(document.getElementById('cycles_chart'), null, {renderer: 'svg'});
+cycles_chart.setOption({
+    grid: [
+        { left: '0%', right: '70%', top: '3%', bottom: '0%', containLabel: true },
+        { left: '30%', right: '1%', top: '3%', bottom: '0%', containLabel: true }
+    ],
+    xAxis: [
+        { gridIndex: 0, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Cycles', inverse: true },
+        { gridIndex: 1, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Libs In Cycles' },
+    ],
+    yAxis: [
+        { type: 'category', gridIndex: 0, axisTick: { show: false } },
+        { type: 'category', gridIndex: 1, show: false, axisLabel: { show: false } },
+    ],
+    series: [
+        {
+            type: 'bar',
+            label: { normal: { show: false, position: 'inside' } },
+            encode: { x: 'cycles', y: 'version' },
+            xAxisIndex: 0, yAxisIndex: 0
+        },
+        {
+            type: 'bar',
+            label: { normal: { show: true, position: 'inside' } },
+            encode: { x: 'libs_in_cycles', y: 'version' },
+            xAxisIndex: 1, yAxisIndex: 1
+        },
+    ],
+    dataset: { source:
+include::cycles_chart.json[]
+    }
+});
+</script>
+++++
+
+== Acknowledgments
+
+This document would not be possible without the fantastic work by Peter Dimov
+in creating the `boostdep` tool.

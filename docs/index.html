@@ -432,19 +432,184 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>Boost C++ Libraries Statistics</h1>
 <div class="details">
 <span id="author" class="author">Rene Rivera</span><br>
 <span id="email" class="email"><a href="mailto:grafikrobot@gmail.com">grafikrobot@gmail.com</a></span><br>
+<span id="revdate">2018-12-22</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a></li>
+<li><a href="#_dependency_cycles">2. Dependency Cycles</a></li>
+<li><a href="#_acknowledgments">3. Acknowledgments</a></li>
+</ul>
 </div>
 </div>
 <div id="content">
-
+<div id="preamble">
+<div class="sectionbody">
+<script src="echarts.min.js"></script>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document represents a collection of possibly relevant and interesting
+graphs and statistics about the Boost C++ Libraries collection. The goal is
+to shed light on the past and current state of the libraries with the hope
+of spurring improvements in the improvement of the collection as a whole.
+And to try and do that with some interesting and fun visualizations.</p>
+</div>
+<div class="paragraph">
+<p>The data is frequently update, usually daily, to reflect current state of
+development along side the historical development. Most of the data only
+goes back to release 1.57.0 (November 3rd, 2014) as the introspection tools
+only deal with the modular arrangement of the libraries.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dependency_cycles"><a class="anchor" href="#_dependency_cycles"></a>2. Dependency Cycles</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This shows both
+the total number of cycles in the Boost libraries ("Cycles")
+and
+the total number of libraries that are involved in cycles ("Libs In Cycles")
+for each release.</p>
+</div>
+<div id="cycles_chart" style="height: 500px;"></div>
+<script type="text/javascript">
+var cycles_chart = echarts.init(document.getElementById('cycles_chart'), null, {renderer: 'svg'});
+cycles_chart.setOption({
+    grid: [
+        { left: '0%', right: '70%', top: '3%', bottom: '0%', containLabel: true },
+        { left: '30%', right: '1%', top: '3%', bottom: '0%', containLabel: true }
+    ],
+    xAxis: [
+        { gridIndex: 0, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Cycles', inverse: true },
+        { gridIndex: 1, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Libs In Cycles' },
+    ],
+    yAxis: [
+        { type: 'category', gridIndex: 0, axisTick: { show: false } },
+        { type: 'category', gridIndex: 1, show: false, axisLabel: { show: false } },
+    ],
+    series: [
+        {
+            type: 'bar',
+            label: { normal: { show: false, position: 'inside' } },
+            encode: { x: 'cycles', y: 'version' },
+            xAxisIndex: 0, yAxisIndex: 0
+        },
+        {
+            type: 'bar',
+            label: { normal: { show: true, position: 'inside' } },
+            encode: { x: 'libs_in_cycles', y: 'version' },
+            xAxisIndex: 1, yAxisIndex: 1
+        },
+    ],
+    dataset: { source:
+[
+    [
+        "version",
+        "libs_in_cycles",
+        "cycles"
+    ],
+    [
+        "develop",
+        17,
+        4
+    ],
+    [
+        "master",
+        18,
+        4
+    ],
+    [
+        "1.69.0",
+        18,
+        4
+    ],
+    [
+        "1.68.0",
+        19,
+        4
+    ],
+    [
+        "1.67.0",
+        13,
+        3
+    ],
+    [
+        "1.66.0",
+        26,
+        4
+    ],
+    [
+        "1.65.0",
+        26,
+        4
+    ],
+    [
+        "1.64.0",
+        18,
+        5
+    ],
+    [
+        "1.63.0",
+        18,
+        5
+    ],
+    [
+        "1.62.0",
+        18,
+        5
+    ],
+    [
+        "1.61.0",
+        18,
+        5
+    ],
+    [
+        "1.60.0",
+        18,
+        5
+    ],
+    [
+        "1.59.0",
+        17,
+        4
+    ],
+    [
+        "1.58.0",
+        17,
+        4
+    ],
+    [
+        "1.57.0",
+        21,
+        4
+    ]
+]
+    }
+});
+</script>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_acknowledgments"><a class="anchor" href="#_acknowledgments"></a>3. Acknowledgments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document would not be possible without the fantastic work by Peter Dimov
+in creating the <code>boostdep</code> tool.</p>
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>

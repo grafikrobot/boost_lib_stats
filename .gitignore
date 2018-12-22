@@ -1,3 +1,4 @@
 /bin/
 .vscode/settings.json
 *.pyc
+docs/cycles_chart.json

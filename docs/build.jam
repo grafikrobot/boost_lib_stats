@@ -5,10 +5,31 @@
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 |#
 
+import os ;
+import modules ;
 using asciidoctor ;
 
-html index.html : index.adoc ;
+DATA_DIR = [ MATCH --data-dir=(.*) : [ modules.peek : ARGV ] ] ;
+VERSIONS = [ MATCH --versions=(.*) : [ modules.peek : ARGV ] ] ;
+
+make cycles_chart.json : build.jam : @cycles_chart <dependency>$(DATA_DIR) ;
+explicit cycles_chart.json ;
+install cycles_chart_json : cycles_chart.json : <location>. ;
+explicit cycles_chart_json ;
+
+actions cycles_chart
+{
+    PYTHONPATH=$(ROOT)/src $(ROOT)/src/script/gen_lib_stats.py ++data-dir=$(DATA_DIR) ++versions=$(VERSIONS) ++cycles-table-json=$(<)
+}
+
+html index.html : index.adoc : <dependency>cycles_chart_json ;
+always index.html ;
 
 install html
     :   index.html
     :   <location>. ;
+
+rule locate ( target : source : properties * )
+{
+    LOCATE on $(target) = [ on $(source) return $(LOCATE) ] ;
+}

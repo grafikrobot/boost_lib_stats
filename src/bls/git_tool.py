@@ -21,21 +21,29 @@ class Git(Commands):
         self.__git__('submodule', '--quiet', 'foreach', 'git', *cmd)
 
     def status(self):
-        self.__git_sub__('status', '-bsu', '--ignored')
+        print("[GIT STATUS]")
+        self.__git__('status', '-bsu', '--ignored')
+        self.__git__('submodule', 'status')
 
     def clean(self):
-        self.__git_sub__('clean', '-dxff')
+        self.__git_sub__('clean', '-qdxff')
 
-    def switch(self, branch):
+    def switch(self, branch=None, tag=None):
+        print('[GIT SWITCH %s]' % (branch if branch else tag))
+        self.__git__('reset', '-q', '--hard')
+        self.__git__('submodule', '--quiet', 'deinit', '--force', '--all')
         self.clean()
-        self.__git__('checkout', '-q', '--force', branch)
-        self.__git_sub__('reset', '-q', '--hard')
-        self.status()
-        self.__git__('merge', '-q', '--ff-only', 'origin')
-        self.__git__('submodule', '--quiet', 'update', '--init', '--no-fetch',
-                     '--checkout', '--force', '--recursive')
-        self.__git_sub__('reset', '-q', '--hard')
-        self.__git_sub__('clean', '-dxff')
+        self.__git__('checkout', '-q', '--force', '--no-recurse-submodules',
+                     'develop')
+        self.__call__(['git', 'branch', '-D', 'temp'])
+        if branch:
+            self.__git__('branch', '--no-track', '-f', 'temp', 'origin/' + branch)
+        else:
+            self.__git__('branch', '--no-track', '-f', 'temp', tag)
+        self.__git__('checkout', '-q', '--force', '--no-recurse-submodules',
+                     'temp')
+        self.__git__('submodule', 'update', '--init', '--no-fetch',
+                     '--recursive')
 
     def clone_all(self, url, dir):
         self.__git__('clone', '--recurse-submodules', '--', url, dir)

@@ -14,11 +14,12 @@ class GitSwitch(Main):
     def __init_parser__(self, parser):
         parser.add_argument('++root')
         parser.add_argument('++branch')
+        parser.add_argument('++tag')
 
     def __run__(self):
         git = Git(self.args)
         with PushDir(self.args.root):
-            git.switch(self.args.branch)
+            git.switch(branch=self.args.branch, tag=self.args.tag)
             git.status()
 
 if __name__ == "__main__":

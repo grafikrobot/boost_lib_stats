@@ -19,12 +19,15 @@ class CIBuild(Main):
         bin_dir = None
         boost_root_dir = None
         script_dir = None
+        data_dir = None
 
         with PushDir(self.args.bin_dir) as dir:
             bin_dir = dir
             boost_root_dir = os.path.join(bin_dir, 'boost_root')
         with PushDir('src', 'script') as dir:
             script_dir = dir
+        with PushDir(bin_dir, 'data') as dir:
+            data_dir = dir
 
         with PushDir('.'):
             build_b2_py = os.path.join(script_dir, 'build_b2.py')
@@ -33,6 +36,8 @@ class CIBuild(Main):
             gen_lib_deps_py = os.path.join(script_dir, 'gen_lib_deps.py')
             gen_lib_ranks_py = os.path.join(script_dir, 'gen_lib_ranks.py')
             git_switch_py = os.path.join(script_dir, 'git_switch.py')
+
+            b2_exe = os.path.join(bin_dir, 'b2_root', 'bin', 'b2')
 
             if not self.args.local:
                 self.__check_call__([
@@ -54,19 +59,20 @@ class CIBuild(Main):
                 '++bin=%s' % (bin_dir)
             ])
 
-            def gen_lib_data(branch, rebuild=False):
-                with PushDir(bin_dir, 'data') as data_dir:
-                    deps_file = os.path.join(data_dir,
-                                             '%s-deps.json' % (branch))
-                    ranks_headers_file = os.path.join(
-                        data_dir, '%s-ranks-headers.json' % (branch))
-                    ranks_build_file = os.path.join(
-                        data_dir, '%s-ranks-build.json' % (branch))
+            def gen_lib_data(branch=None, tag=None, rebuild=False):
+                label = branch if branch else tag
+                print('[GEN LIB DATA %s]' % (label))
+                deps_file = os.path.join(data_dir, '%s-deps.json' % (label))
+                ranks_headers_file = os.path.join(
+                    data_dir, '%s-ranks-headers.json' % (label))
+                ranks_build_file = os.path.join(
+                    data_dir, '%s-ranks-build.json' % (label))
                 if rebuild or not os.path.exists(deps_file):
                     self.__check_call__([
                         git_switch_py,
                         '++root=%s' % (boost_root_dir),
                         '++branch=%s' % (branch)
+                        if branch else '++tag=%s' % (tag)
                     ])
                     self.__check_call__([
                         gen_lib_deps_py,
@@ -85,10 +91,15 @@ class CIBuild(Main):
                         '++json=%s' % (ranks_build_file), '++buildable'
                     ])
 
-            gen_lib_data('develop', rebuild=True)
-            gen_lib_data('master', rebuild=True)
-            for v in range(57, 68 + 1):
-                gen_lib_data('boost-1.%s.0' % (v))
+            gen_lib_data(branch='develop', rebuild=True)
+            gen_lib_data(branch='master', rebuild=True)
+            for v in range(57, 69 + 1):
+                gen_lib_data(tag='boost-1.%s.0' % (v))
+
+            self.__check_call__([
+                b2_exe, '-d+2',
+                '--data-dir=%s' % (data_dir), '--versions=57-69,master,develop'
+            ])
 
 
 if __name__ == "__main__":
