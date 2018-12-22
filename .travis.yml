@@ -11,7 +11,7 @@ branches:
   only:
     - master
 stages:
-  - name: build
+  - name: build data
   - name: website update
 jobs:
   include:
