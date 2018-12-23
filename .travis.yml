@@ -30,9 +30,17 @@ jobs:
         - ./src/script/ci_build.py ++bin-dir=${HOME}/devcache/boost_lib_stats ++website-update
         - git config user.email "bls-bot"
         - git config user.name "bls-bot"
+        - git commit --all -m "Automatic update. [skip ci]"
 before_cache:
   - export PYTHONPATH=${PWD}/src
   - ./src/script/git_switch.py ++root=${HOME}/devcache/boost_lib_stats/boost_root ++branch=develop
 cache:
   directories:
     - $HOME/devcache
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN
+  keep-history: true
+  on:
+    branch: master
