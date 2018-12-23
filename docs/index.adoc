@@ -53,8 +53,8 @@ for each release.
 var cycles_chart = echarts.init(document.getElementById('cycles_chart'), null, {renderer: 'svg'});
 cycles_chart.setOption({
     grid: [
-        { left: '0%', right: '70%', top: '3%', bottom: '0%', containLabel: true },
-        { left: '30%', right: '1%', top: '3%', bottom: '0%', containLabel: true }
+        { left: '0%', right: '70%', top: '5%', bottom: '0%', containLabel: true },
+        { left: '30%', right: '1%', top: '5%', bottom: '0%', containLabel: true }
     ],
     xAxis: [
         { gridIndex: 0, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Cycles', inverse: true },
