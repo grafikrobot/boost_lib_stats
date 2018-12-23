@@ -53,12 +53,14 @@ class CIBuild(Main):
             self.__check_call__([
                 build_b2_py,
                 '++boost-root=%s' % (boost_root_dir),
-                '++bin=%s' % (bin_dir)
+                '++bin=%s' % (bin_dir),
+                '++rebuild' if os.environ.get('CI',False) else ''
             ])
             self.__check_call__([
                 build_bdep_py,
                 '++boost-root=%s' % (boost_root_dir),
-                '++bin=%s' % (bin_dir)
+                '++bin=%s' % (bin_dir),
+                '++rebuild' if os.environ.get('CI',False) else ''
             ])
 
             def gen_lib_data(branch=None, tag=None, rebuild=False):
