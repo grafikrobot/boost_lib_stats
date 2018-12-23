@@ -17,11 +17,12 @@ jobs:
   include:
     - stage: build data
       script:
-        - gem install asciidoctor
         - export PYTHONPATH=${PWD}/src
         - ./src/script/ci_build.py ++bin-dir=${HOME}/devcache/boost_lib_stats ++build-data
     - stage: website update
       script:
+        - rvm --default use 2.3
+        - ruby -v
         - gem install asciidoctor
         - asciidoctor --version
         - export PYTHONPATH=${PWD}/src
@@ -34,5 +35,3 @@ before_cache:
 cache:
   directories:
     - $HOME/devcache
-rvm:
-  - 2.3
