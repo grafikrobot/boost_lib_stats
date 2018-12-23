@@ -56,13 +56,13 @@ class CIBuild(Main):
             self.__check_call__([
                 build_b2_py,
                 '++boost-root=%s' % (boost_root_dir),
-                '++bin=%s' % (bin_dir), '++rebuild' if rebuild_tools else ''
-            ])
+                '++bin=%s' % (bin_dir)
+            ] + ['++rebuild'] if rebuild_tools else [])
             self.__check_call__([
                 build_bdep_py,
                 '++boost-root=%s' % (boost_root_dir),
-                '++bin=%s' % (bin_dir), '++rebuild' if rebuild_tools else ''
-            ])
+                '++bin=%s' % (bin_dir)
+            ] + ['++rebuild'] if rebuild_tools else [])
 
             def gen_lib_data(branch=None, tag=None, rebuild=False):
                 label = branch if branch else tag
