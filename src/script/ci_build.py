@@ -41,6 +41,9 @@ class CIBuild(Main):
 
             b2_exe = os.path.join(bin_dir, 'b2_root', 'bin', 'b2')
 
+            rebuild_tools = os.environ.get('CI',
+                                           False) and self.args.build_data
+
             if not self.args.local:
                 self.__check_call__([
                     clone_boost_py,
@@ -53,14 +56,12 @@ class CIBuild(Main):
             self.__check_call__([
                 build_b2_py,
                 '++boost-root=%s' % (boost_root_dir),
-                '++bin=%s' % (bin_dir),
-                '++rebuild' if os.environ.get('CI',False) else ''
+                '++bin=%s' % (bin_dir), '++rebuild' if rebuild_tools else ''
             ])
             self.__check_call__([
                 build_bdep_py,
                 '++boost-root=%s' % (boost_root_dir),
-                '++bin=%s' % (bin_dir),
-                '++rebuild' if os.environ.get('CI',False) else ''
+                '++bin=%s' % (bin_dir), '++rebuild' if rebuild_tools else ''
             ])
 
             def gen_lib_data(branch=None, tag=None, rebuild=False):
@@ -104,7 +105,8 @@ class CIBuild(Main):
             if self.args.website_update:
                 self.__check_call__([
                     b2_exe, '-d+2',
-                    '--data-dir=%s' % (data_dir), '--versions=57-69,master,develop'
+                    '--data-dir=%s' % (data_dir),
+                    '--versions=57-69,master,develop'
                 ])
 
 
