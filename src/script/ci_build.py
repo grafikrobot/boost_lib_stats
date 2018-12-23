@@ -53,16 +53,14 @@ class CIBuild(Main):
                 git_switch_py,
                 '++root=%s' % (boost_root_dir), '++branch=develop', '++trace'
             ])
-            self.__check_call__([
-                build_b2_py,
+            tool_build_args = [
                 '++boost-root=%s' % (boost_root_dir),
                 '++bin=%s' % (bin_dir)
-            ] + ['++rebuild'] if rebuild_tools else [])
-            self.__check_call__([
-                build_bdep_py,
-                '++boost-root=%s' % (boost_root_dir),
-                '++bin=%s' % (bin_dir)
-            ] + ['++rebuild'] if rebuild_tools else [])
+            ]
+            if rebuild_tools:
+                tool_build_args.append('++rebuild')
+            self.__check_call__([build_b2_py] + tool_build_args)
+            self.__check_call__([build_bdep_py] + tool_build_args)
 
             def gen_lib_data(branch=None, tag=None, rebuild=False):
                 label = branch if branch else tag
