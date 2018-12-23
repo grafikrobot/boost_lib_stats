@@ -30,7 +30,7 @@ jobs:
         - git config user.email "bls-bot"
         - git config user.name "bls-bot"
         - git commit --all -m "Automatic update. [skip ci]"
-        - git push "https://grafikrobot:${GH_TOKEN}@github.com/grafikrobot/boost_lib_stats.git"
+        - git push "https://grafikrobot:${GH_TOKEN}@github.com/grafikrobot/boost_lib_stats.git" HEAD:master
 before_cache:
   - export PYTHONPATH=${PWD}/src
   - ./src/script/git_switch.py ++root=${HOME}/devcache/boost_lib_stats/boost_root ++branch=develop
