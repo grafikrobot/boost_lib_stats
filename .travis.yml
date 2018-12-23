@@ -34,3 +34,5 @@ before_cache:
 cache:
   directories:
     - $HOME/devcache
+rvm:
+  - 2.3
