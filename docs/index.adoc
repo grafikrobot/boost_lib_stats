@@ -39,18 +39,18 @@ development along side the historical development. Most of the data only
 goes back to release 1.57.0 (November 3rd, 2014) as the introspection tools
 only deal with the modular arrangement of the libraries.
 
-== Dependency Cycles
+== Dependency Cycles, Headers
 
 This shows both
 the total number of cycles in the Boost libraries ("Cycles")
 and
 the total number of libraries that are involved in cycles ("Libs In Cycles")
-for each release.
+for the library headers of each release.
 
 ++++
-<div id="cycles_chart" style="height: 500px;"></div>
+<div id="cycles_chart_headers" style="height: 500px;"></div>
 <script type="text/javascript">
-var cycles_chart = echarts.init(document.getElementById('cycles_chart'), null, {renderer: 'svg'});
+var cycles_chart = echarts.init(document.getElementById('cycles_chart_headers'), null, {renderer: 'svg'});
 cycles_chart.setOption({
     grid: [
         { left: '0%', right: '70%', top: '5%', bottom: '0%', containLabel: true },
@@ -79,7 +79,53 @@ cycles_chart.setOption({
         },
     ],
     dataset: { source:
-include::cycles_chart.json[]
+include::cycles_chart_headers.json[]
+    }
+});
+</script>
+++++
+
+== Dependency Cycles, Build
+
+This shows both
+the total number of cycles in the Boost libraries ("Cycles")
+and
+the total number of libraries that are involved in cycles ("Libs In Cycles")
+for building the libraries of each release.
+
+++++
+<div id="cycles_chart_build" style="height: 500px;"></div>
+<script type="text/javascript">
+var cycles_chart = echarts.init(document.getElementById('cycles_chart_build'), null, {renderer: 'svg'});
+cycles_chart.setOption({
+    grid: [
+        { left: '0%', right: '70%', top: '5%', bottom: '0%', containLabel: true },
+        { left: '30%', right: '1%', top: '5%', bottom: '0%', containLabel: true }
+    ],
+    xAxis: [
+        { gridIndex: 0, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Cycles', inverse: true },
+        { gridIndex: 1, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Libs In Cycles' },
+    ],
+    yAxis: [
+        { type: 'category', gridIndex: 0, axisTick: { show: false } },
+        { type: 'category', gridIndex: 1, show: false, axisLabel: { show: false } },
+    ],
+    series: [
+        {
+            type: 'bar',
+            label: { normal: { show: false, position: 'inside' } },
+            encode: { x: 'cycles', y: 'version' },
+            xAxisIndex: 0, yAxisIndex: 0
+        },
+        {
+            type: 'bar',
+            label: { normal: { show: true, position: 'inside' } },
+            encode: { x: 'libs_in_cycles', y: 'version' },
+            xAxisIndex: 1, yAxisIndex: 1
+        },
+    ],
+    dataset: { source:
+include::cycles_chart_build.json[]
     }
 });
 </script>

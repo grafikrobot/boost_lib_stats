@@ -438,14 +438,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Rene Rivera</span><br>
 <span id="email" class="email"><a href="mailto:grafikrobot@gmail.com">grafikrobot@gmail.com</a></span><br>
-<span id="revdate">2018-12-26 22:33:42 UTC</span>
+<span id="revdate">2018-12-27 13:23:23 -0600</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_dependency_cycles">2. Dependency Cycles</a></li>
-<li><a href="#_acknowledgments">3. Acknowledgments</a></li>
+<li><a href="#_dependency_cycles_headers">2. Dependency Cycles, Headers</a></li>
+<li><a href="#_dependency_cycles_build">3. Dependency Cycles, Build</a></li>
+<li><a href="#_acknowledgments">4. Acknowledgments</a></li>
 </ul>
 </div>
 </div>
@@ -474,18 +475,18 @@ only deal with the modular arrangement of the libraries.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_dependency_cycles"><a class="anchor" href="#_dependency_cycles"></a>2. Dependency Cycles</h2>
+<h2 id="_dependency_cycles_headers"><a class="anchor" href="#_dependency_cycles_headers"></a>2. Dependency Cycles, Headers</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This shows both
 the total number of cycles in the Boost libraries ("Cycles")
 and
 the total number of libraries that are involved in cycles ("Libs In Cycles")
-for each release.</p>
+for the library headers of each release.</p>
 </div>
-<div id="cycles_chart" style="height: 500px;"></div>
+<div id="cycles_chart_headers" style="height: 500px;"></div>
 <script type="text/javascript">
-var cycles_chart = echarts.init(document.getElementById('cycles_chart'), null, {renderer: 'svg'});
+var cycles_chart = echarts.init(document.getElementById('cycles_chart_headers'), null, {renderer: 'svg'});
 cycles_chart.setOption({
     grid: [
         { left: '0%', right: '70%', top: '5%', bottom: '0%', containLabel: true },
@@ -602,7 +603,135 @@ cycles_chart.setOption({
 </div>
 </div>
 <div class="sect1">
-<h2 id="_acknowledgments"><a class="anchor" href="#_acknowledgments"></a>3. Acknowledgments</h2>
+<h2 id="_dependency_cycles_build"><a class="anchor" href="#_dependency_cycles_build"></a>3. Dependency Cycles, Build</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This shows both
+the total number of cycles in the Boost libraries ("Cycles")
+and
+the total number of libraries that are involved in cycles ("Libs In Cycles")
+for building the libraries of each release.</p>
+</div>
+<div id="cycles_chart_build" style="height: 500px;"></div>
+<script type="text/javascript">
+var cycles_chart = echarts.init(document.getElementById('cycles_chart_build'), null, {renderer: 'svg'});
+cycles_chart.setOption({
+    grid: [
+        { left: '0%', right: '70%', top: '5%', bottom: '0%', containLabel: true },
+        { left: '30%', right: '1%', top: '5%', bottom: '0%', containLabel: true }
+    ],
+    xAxis: [
+        { gridIndex: 0, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Cycles', inverse: true },
+        { gridIndex: 1, position: 'top', nameLocation: 'center', nameGap: '25', name: 'Libs In Cycles' },
+    ],
+    yAxis: [
+        { type: 'category', gridIndex: 0, axisTick: { show: false } },
+        { type: 'category', gridIndex: 1, show: false, axisLabel: { show: false } },
+    ],
+    series: [
+        {
+            type: 'bar',
+            label: { normal: { show: false, position: 'inside' } },
+            encode: { x: 'cycles', y: 'version' },
+            xAxisIndex: 0, yAxisIndex: 0
+        },
+        {
+            type: 'bar',
+            label: { normal: { show: true, position: 'inside' } },
+            encode: { x: 'libs_in_cycles', y: 'version' },
+            xAxisIndex: 1, yAxisIndex: 1
+        },
+    ],
+    dataset: { source:
+[
+    [
+        "version",
+        "libs_in_cycles",
+        "cycles"
+    ],
+    [
+        "develop",
+        17,
+        4
+    ],
+    [
+        "master",
+        18,
+        4
+    ],
+    [
+        "1.69.0",
+        18,
+        4
+    ],
+    [
+        "1.68.0",
+        19,
+        4
+    ],
+    [
+        "1.67.0",
+        13,
+        3
+    ],
+    [
+        "1.66.0",
+        26,
+        4
+    ],
+    [
+        "1.65.0",
+        26,
+        4
+    ],
+    [
+        "1.64.0",
+        18,
+        5
+    ],
+    [
+        "1.63.0",
+        18,
+        5
+    ],
+    [
+        "1.62.0",
+        18,
+        5
+    ],
+    [
+        "1.61.0",
+        18,
+        5
+    ],
+    [
+        "1.60.0",
+        18,
+        5
+    ],
+    [
+        "1.59.0",
+        17,
+        4
+    ],
+    [
+        "1.58.0",
+        17,
+        4
+    ],
+    [
+        "1.57.0",
+        21,
+        4
+    ]
+]
+    }
+});
+</script>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_acknowledgments"><a class="anchor" href="#_acknowledgments"></a>4. Acknowledgments</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This document would not be possible without the fantastic work by Peter Dimov

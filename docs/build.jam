@@ -12,17 +12,30 @@ using asciidoctor ;
 DATA_DIR = [ MATCH --data-dir=(.*) : [ modules.peek : ARGV ] ] ;
 VERSIONS = [ MATCH --versions=(.*) : [ modules.peek : ARGV ] ] ;
 
-make cycles_chart.json : build.jam : @cycles_chart <dependency>$(DATA_DIR) ;
-explicit cycles_chart.json ;
-install cycles_chart_json : cycles_chart.json : <location>. ;
-explicit cycles_chart_json ;
+make cycles_chart_headers.json : build.jam : @cycles_chart_headers <dependency>$(DATA_DIR) ;
+explicit cycles_chart_headers.json ;
+install cycles_chart_headers_json : cycles_chart_headers.json : <location>. ;
+explicit cycles_chart_headers_json ;
 
-actions cycles_chart
+actions cycles_chart_headers
 {
-    PYTHONPATH=$(ROOT)/src $(ROOT)/src/script/gen_lib_stats.py ++data-dir=$(DATA_DIR) ++versions=$(VERSIONS) ++cycles-table-json=$(<)
+    PYTHONPATH=$(ROOT)/src $(ROOT)/src/script/gen_lib_stats.py ++data-dir=$(DATA_DIR) ++versions=$(VERSIONS) ++json=$(<) ++kind=cycles_table
 }
 
-html index.html : index.adoc : <dependency>cycles_chart_json ;
+make cycles_chart_build.json : build.jam : @cycles_chart_build <dependency>$(DATA_DIR) ;
+explicit cycles_chart_build.json ;
+install cycles_chart_build_json : cycles_chart_build.json : <location>. ;
+explicit cycles_chart_build_json ;
+
+actions cycles_chart_build
+{
+    PYTHONPATH=$(ROOT)/src $(ROOT)/src/script/gen_lib_stats.py ++data-dir=$(DATA_DIR) ++versions=$(VERSIONS) ++json=$(<) ++kind=cycles_table ++build
+}
+
+html index.html : index.adoc :
+    <dependency>cycles_chart_headers_json
+    <dependency>cycles_chart_build_json
+    ;
 always index.html ;
 
 install html
