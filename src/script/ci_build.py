@@ -94,17 +94,19 @@ class CIBuild(Main):
                         '++json=%s' % (ranks_build_file), '++buildable'
                     ])
 
+            version_range = (57, 70)
+
             if self.args.build_data:
                 gen_lib_data(branch='develop', rebuild=True)
                 gen_lib_data(branch='master', rebuild=True)
-                for v in range(57, 69 + 1):
+                for v in range(version_range[0], version_range[1] + 1):
                     gen_lib_data(tag='boost-1.%s.0' % (v))
 
             if self.args.website_update:
                 self.__check_call__([
                     b2_exe, '-d+2',
                     '--data-dir=%s' % (data_dir),
-                    '--versions=57-70,master,develop'
+                    '--versions=%s-%s,master,develop' % version_range
                 ])
 
 
