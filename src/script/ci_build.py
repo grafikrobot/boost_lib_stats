@@ -104,7 +104,7 @@ class CIBuild(Main):
                 self.__check_call__([
                     b2_exe, '-d+2',
                     '--data-dir=%s' % (data_dir),
-                    '--versions=57-69,master,develop'
+                    '--versions=57-70,master,develop'
                 ])
 
 
