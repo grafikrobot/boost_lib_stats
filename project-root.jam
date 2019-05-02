@@ -8,7 +8,7 @@
 path-constant ROOT : . ;
 
 project boost_lib_stats
-    : build-dir bin
+    : build-dir .build
     ;
 
 build-project docs ;
