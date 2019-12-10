@@ -1,5 +1,5 @@
 """
-    Copyright (C) 2018 Rene Rivera.
+    Copyright (C) 2018-2019 Rene Rivera.
     Use, modification and distribution are subject to the
     Boost Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,6 +7,7 @@
 from pprint import pprint
 from .lib_data import LibraryData
 from .util import Main, PushDir
+import os
 
 
 class GenerateLibDepencyData(Main):
@@ -39,4 +40,17 @@ class GenerateLibRanksData(Main):
             json_out = lib_data.save_rank_info(self.args.json)
             if self.args.trace:
                 print('RANKS INFO:')
+                print(json_out)
+
+class GenerateGitHubData(Main):
+    def __init_parser__(self, parser):
+        parser.add_argument('++json')
+
+    def __run__(self):
+        lib_data = LibraryData(self.args)
+        lib_data.gen_github_info(os.environ['GH_TOKEN'])
+        if self.args.json:
+            json_out = lib_data.save_github_info(self.args.json)
+            if self.args.trace:
+                print('GITHUB INFO:')
                 print(json_out)

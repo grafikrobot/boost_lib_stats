@@ -37,6 +37,7 @@ class CIBuild(Main):
             clone_boost_py = os.path.join(script_dir, 'clone_boost.py')
             gen_lib_deps_py = os.path.join(script_dir, 'gen_lib_deps.py')
             gen_lib_ranks_py = os.path.join(script_dir, 'gen_lib_ranks.py')
+            gen_lib_ghdata_py = os.path.join(script_dir, 'gen_lib_ghdata.py')
             git_switch_py = os.path.join(script_dir, 'git_switch.py')
 
             b2_exe = os.path.join(bin_dir, 'b2_root', 'bin', 'b2')
@@ -101,6 +102,10 @@ class CIBuild(Main):
                 gen_lib_data(branch='master', rebuild=True)
                 for v in range(version_range[0], version_range[1] + 1):
                     gen_lib_data(tag='boost-1.%s.0' % (v))
+                self.__check_call__([
+                    gen_lib_ghdata_py,
+                    '++json=%s' % (os.path.join(data_dir, 'ghdata.json'))
+                ])
 
             if self.args.website_update:
                 self.__check_call__([

@@ -13,7 +13,11 @@ from bls.util import Main, PushDir
 import json
 
 
-class GneLibStats(Main):
+class GenLibStats(Main):
+    '''
+    Generates specific kinds 
+    '''
+
     def __init_parser__(self, parser):
         parser.add_argument('++data-dir')
         parser.add_argument('++versions')
@@ -23,6 +27,9 @@ class GneLibStats(Main):
         parser.add_argument('++build', action='store_true', default=False)
 
     def __run__(self):
+        getattr(self, 'gen_%s' % (self.args.kind))()
+
+    def load_lib_data(self):
         self.lib_data_headers = []
         self.lib_data_build = []
         self.lib_data_versions = []
@@ -50,15 +57,14 @@ class GneLibStats(Main):
                     self.lib_data_headers.append(data_headers.ranks_info)
                     self.lib_data_build.append(data_build.ranks_info)
 
-        getattr(self, '__gen_%s__' % (self.args.kind))()
-
-    def __gen_cycles_table__(self):
+    def gen_cycles_table(self):
+        self.load_lib_data()
         lib_stats = LibraryStats(self.args)
         if self.args.json:
             if self.args.headers:
                 lib_stats.gen_cycles_table(self.lib_data_headers,
                                            self.lib_data_versions)
-            else:
+            elif self.args.build:
                 lib_stats.gen_cycles_table(self.lib_data_build,
                                            self.lib_data_versions)
             with open(self.args.json, "w") as f:
@@ -67,5 +73,17 @@ class GneLibStats(Main):
                         lib_stats.cycles_table, sort_keys=True, indent=4))
 
 
+    def gen_popstats_graph(self):
+        gh_data = LibraryData(self.args)
+        with PushDir(self.args.data_dir):
+            gh_data.load_github_info("ghdata.json")
+        lib_stats = LibraryStats(self.args)
+        if self.args.json:
+            lib_stats.gen_pop_index_table(gh_data)
+        with open(self.args.json, "w") as f:
+            f.write(
+                json.dumps(
+                    lib_stats.pop_index_table, sort_keys=True, indent=4))
+
 if __name__ == "__main__":
-    GneLibStats()
+    GenLibStats()

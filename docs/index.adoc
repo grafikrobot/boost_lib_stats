@@ -48,7 +48,7 @@ the total number of libraries that are involved in cycles ("Libs In Cycles")
 for the library headers of each release.
 
 ++++
-<div id="cycles_chart_headers" style="height: 500px;"></div>
+<div id="cycles_chart_headers" style="height: 600px;"></div>
 <script type="text/javascript">
 var cycles_chart = echarts.init(document.getElementById('cycles_chart_headers'), null, {renderer: 'svg'});
 cycles_chart.setOption({
@@ -94,7 +94,7 @@ the total number of libraries that are involved in cycles ("Libs In Cycles")
 for building the libraries of each release.
 
 ++++
-<div id="cycles_chart_build" style="height: 500px;"></div>
+<div id="cycles_chart_build" style="height: 600px;"></div>
 <script type="text/javascript">
 var cycles_chart = echarts.init(document.getElementById('cycles_chart_build'), null, {renderer: 'svg'});
 cycles_chart.setOption({
@@ -130,6 +130,147 @@ include::cycles_chart_build.json[]
 });
 </script>
 ++++
+
+// == Dependency Levels, Headers
+
+// ++++
+// <div id="levels_headers" style="height: 500px;"></div>
+// <script type="text/javascript">
+// var levels_headers = echarts.init(document.getElementById('levels_headers'));
+// levels_headers.setOption({
+//     /*
+//     series: {
+//         type: 'sankey',
+//         layout:'none',
+//         focusNodeAdjacency: 'allEdges',
+//         data: [
+//             { name: 'config (1.68.0)'},
+//             { name: 'predef (1.68.0)'},
+//             { name: 'system (1.68.0)'},
+//             { name: '0 (1.68.0)'},
+//             { name: '1 (1.68.0)'},
+//             { name: '2 (1.68.0)'},
+//             { name: 'config (1.69.0)'},
+//             { name: 'predef (1.69.0)'},
+//             { name: 'system (1.69.0)'},
+//             { name: '0 (1.69.0)'},
+//             { name: '1 (1.69.0)'},
+//             { name: '2 (1.69.0)'},
+//         ],
+//         links: [
+//             { source: 'config (1.68.0)', target: '0 (1.68.0)', value: '1' },
+//             { source: 'predef (1.68.0)', target: '1 (1.68.0)', value: '1' },
+//             { source: 'system (1.68.0)', target: '2 (1.68.0)', value: '1' },
+//             { source: '0 (1.68.0)', target: 'config (1.69.0)', value: '1' },
+//             { source: '1 (1.68.0)', target: 'predef (1.69.0)', value: '1' },
+//             { source: '2 (1.68.0)', target: 'system (1.69.0)', value: '1' },
+//             { source: 'config (1.69.0)', target: '0 (1.69.0)', value: '1' },
+//             { source: 'predef (1.69.0)', target: '0 (1.69.0)', value: '1' },
+//             { source: 'system (1.69.0)', target: '1 (1.69.0)', value: '1' },
+//         ]
+//     }
+//     */
+//     series: [{
+//         type: 'custom',
+//         renderItem: function (params, api) {
+//             var categoryIndex = api.value(0);
+//             var startPoint = api.coord([api.value(1), categoryIndex]);
+//             var endPoint = api.coord([api.value(2), categoryIndex]);
+//             var height = api.size([0, 1])[1] * 0.6;
+//             var rectShape = echarts.graphic.clipRectByRect({
+//                 x: startPoint[0],
+//                 y: startPoint[1] - height / 2,
+//                 width: endPoint[0] - startPoint[0],
+//                 height: height
+//             }, {
+//                 x: params.coordSys.x,
+//                 y: params.coordSys.y,
+//                 width: params.coordSys.width,
+//                 height: params.coordSys.height
+//             })
+
+//             // Returns definitions for the current `dataItem`.
+//             return rectShape && {
+//                 type: 'rect',
+//                 shape: rectShape,
+//                 style: api.style()
+//             };
+//         },
+//         data: [
+//             [12, 44, 55, 60], // The first dataItem.
+//             [53, 31, 21, 56], // The second dataItem.
+//             [71, 33, 10, 20], // The third dataItem.
+//         ]
+//     }]
+// });
+// </script>
+// ++++
+
+// == Dependency Levels, Build
+
+== Popularity
+
+It's interesting to look at how "popular" a library is relative to other libraries.
+It's a reasonable way to discern what to put resources on. And possibly to find
+kinds of libraries that users might want. This chart shows the relative popularity
+of Boost libraries and tools. The popularity index is computed to account the
+GitHub "watchers", "forks", and "stars" weighing their relevance in that order.
+The statistics for this graph are current as of the date in this document (above).
+
+++++
+<div id="popularity_chart" style="height: 800px; margin-bottom: 1em;"></div>
+<script type="text/javascript">
+var popularity_chart = echarts.init(document.getElementById('popularity_chart'));
+popularity_chart.setOption({
+    title: {
+        text: 'Popularity',
+        subtext: 'GitHub stars, forks, and watchers proportional index.',
+        left: 'center'
+    },
+    tooltip: {
+        formatter: function (info) {
+            if (info.treePathInfo.length == 2) {
+                return [
+                    '<div class="tooltip-title">' + echarts.format.encodeHTML(info.name) + '</div>'
+                    ].join('');
+            } else {
+                return [
+                    '<div class="tooltip-title">' + echarts.format.encodeHTML(info.name) + '</div>',
+                    'Forks: ' + echarts.format.addCommas(info.value[1]) + '<br>',
+                    'Stars: ' + echarts.format.addCommas(info.value[2]) + '<br>',
+                    'Watchers: ' + echarts.format.addCommas(info.value[3]) + '<br>'
+                    ].join('');
+            }
+        }
+    },
+    series: [
+        {
+            name: 'Popularity',
+            type: 'treemap',
+            label: {
+                show: true,
+                formatter: '{b}'
+            },
+            upperLabel: { normal: { show: true, height: 40 } },
+            itemStyle: { normal: { borderColor: '#fff' } },
+            levels: [
+                { itemStyle: { normal: { borderWidth: 0, gapWidth: 5 } } },
+                {   colorSaturation: [0.35, 0.5],
+                    itemStyle: { normal: {
+                        borderWidth: 5, gapWidth: 1, borderColorSaturation: 0.6 } } }
+            ],
+            data:
+include::popstats.json[]
+        }
+    ]
+});
+</script>
+++++
+
+****
+Use the mouse/touch to move the graph. And use the scroll wheel / pinch to zoom.
+****
+
 
 == Acknowledgments
 

@@ -10,7 +10,7 @@ setup(
         Utilities to inspect Boost C++ Libraries and generate relevant
         information and statistics.
         ''',
-    version='0.1',
+    version='0.2',
     url='https://github.com/grafikrobot/boost_lib_stats',
     author='Rene Rivera',
     author_email='grafikrobot@gmail.com',

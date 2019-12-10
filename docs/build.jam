@@ -12,7 +12,7 @@ using asciidoctor ;
 DATA_DIR = [ MATCH --data-dir=(.*) : [ modules.peek : ARGV ] ] ;
 VERSIONS = [ MATCH --versions=(.*) : [ modules.peek : ARGV ] ] ;
 
-make cycles_chart_headers.json : build.jam : @cycles_chart_headers <dependency>$(DATA_DIR) ;
+make cycles_chart_headers.json : build.jam : @cycles_chart_headers <dependency>$(DATA_DIR)/. ;
 explicit cycles_chart_headers.json ;
 install cycles_chart_headers_json : cycles_chart_headers.json : <location>. ;
 explicit cycles_chart_headers_json ;
@@ -22,7 +22,7 @@ actions cycles_chart_headers
     PYTHONPATH=$(ROOT)/src $(ROOT)/src/script/gen_lib_stats.py ++data-dir=$(DATA_DIR) ++versions=$(VERSIONS) ++json=$(<) ++kind=cycles_table
 }
 
-make cycles_chart_build.json : build.jam : @cycles_chart_build <dependency>$(DATA_DIR) ;
+make cycles_chart_build.json : build.jam : @cycles_chart_build <dependency>$(DATA_DIR)/. ;
 explicit cycles_chart_build.json ;
 install cycles_chart_build_json : cycles_chart_build.json : <location>. ;
 explicit cycles_chart_build_json ;
@@ -32,9 +32,20 @@ actions cycles_chart_build
     PYTHONPATH=$(ROOT)/src $(ROOT)/src/script/gen_lib_stats.py ++data-dir=$(DATA_DIR) ++versions=$(VERSIONS) ++json=$(<) ++kind=cycles_table ++build
 }
 
+make popstats.json : build.jam : @popstats <dependency>$(DATA_DIR)/. ;
+explicit popstats.json ;
+install popstats_json : popstats.json : <location>. ;
+explicit popstats_json ;
+
+actions popstats
+{
+    PYTHONPATH=$(ROOT)/src $(ROOT)/src/script/gen_lib_stats.py ++data-dir=$(DATA_DIR) ++json=$(<) ++kind=popstats_graph
+}
+
 html index.html : index.adoc :
     <dependency>cycles_chart_headers_json
     <dependency>cycles_chart_build_json
+    <dependency>popstats_json
     ;
 always index.html ;
 

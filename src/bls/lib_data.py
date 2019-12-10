@@ -1,5 +1,5 @@
 """
-    Copyright (C) 2018 Rene Rivera.
+    Copyright (C) 2018-2019 Rene Rivera.
     Use, modification and distribution are subject to the
     Boost Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,13 +9,15 @@ import os.path
 from pprint import pprint
 from .graph import strongly_connected_components_path
 from .util import Commands, PushDir
-
+import urllib.parse
+import urllib.request
 
 class LibraryData(Commands):
     def __init__(self, args):
         self.args = args
         self.dependency_info = {}
         self.ranks_info = []
+        self.github_info = {}
 
     def gen_dependency_info(self, boost_root, boostdep_exe='boostdep'):
         self.dependency_info = {}
@@ -120,3 +122,77 @@ class LibraryData(Commands):
 
     def save_rank_info(self, ranks_info_file):
         return self.__save_data__(ranks_info_file, self.ranks_info)
+
+    def gen_github_info(self, gh_token):
+        self.github_info = {}
+        query_fmt = '''\
+{
+  organization(login: "boostorg") {
+    repositories(first: 100, orderBy: {field: NAME, direction: ASC} %s) {
+      edges {
+        cursor
+        repository: node {
+          name
+          forkCount
+          stargazers(first: 1) {
+            totalCount
+          }
+          watchers(first: 1) {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+}
+'''
+        exclude = set([
+            'admin', 'boost', 'boost-ci', 'boost_install', 'documentation-fixes',
+            'headers', 'mincmake', 'release-tools', 'regression', 'website',
+            'wiki'])
+        cursor = None
+        while cursor != "-":
+            data = {}
+            if cursor == None:
+                data['query'] = query_fmt % ("")
+            else:
+                data['query'] = query_fmt % (', after: "%s"' % (cursor))
+            # data = urllib.parse.urlencode(data)
+            data = json.dumps(data)
+            if self.args.trace:
+                print('DATA:')
+                print(data)
+            data = data.encode('utf-8')
+            req = urllib.request.Request(
+                'https://api.github.com/graphql',
+                data,
+                headers={'Authorization': 'bearer %s' % (gh_token)})
+            resp = urllib.request.urlopen(req)
+            resp_data = resp.read()
+            data = json.loads(resp_data)
+            cursor = "-"
+            for lib_data in data['data']['organization']['repositories']['edges']:
+                cursor = lib_data['cursor']
+                if not lib_data['repository']['name'] in exclude:
+                    self.github_info[lib_data['repository']['name']] = {
+                        'forks': lib_data['repository']['forkCount'],
+                        'stars': lib_data['repository']['stargazers']['totalCount'],
+                        'watchers': lib_data['repository']['watchers']['totalCount']
+                        }
+        if self.args.debug:
+            print('GITHUB INFO:')
+            pprint(self.github_info)
+
+    def load_github_info(self, github_info_file):
+        self.github_info = self.__load_data__(github_info_file)
+        if self.args.trace:
+            json_out = json.dumps(
+                self.github_info,
+                sort_keys=True,
+                indent=2,
+                separators=(',', ': '))
+            print('GITHUB INFO:')
+            print(json_out)
+
+    def save_github_info(self, github_info_file):
+        return self.__save_data__(github_info_file, self.github_info)

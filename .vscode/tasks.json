@@ -6,7 +6,7 @@
         {
             "label": "B2 (build)",
             "type": "shell",
-            "command": "bjam",
+            "command": "b2",
             "group": {
                 "kind": "build",
                 "isDefault": true
