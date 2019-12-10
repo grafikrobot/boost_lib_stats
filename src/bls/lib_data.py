@@ -169,7 +169,7 @@ class LibraryData(Commands):
                 headers={'Authorization': 'bearer %s' % (gh_token)})
             resp = urllib.request.urlopen(req)
             resp_data = resp.read()
-            data = json.loads(resp_data)
+            data = json.loads(resp_data.decode())
             cursor = "-"
             for lib_data in data['data']['organization']['repositories']['edges']:
                 cursor = lib_data['cursor']
