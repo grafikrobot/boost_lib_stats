@@ -444,7 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Rene Rivera</span><br>
 <span id="email" class="email"><a href="mailto:grafikrobot@gmail.com">grafikrobot@gmail.com</a></span><br>
-<span id="revdate">2019-12-10 01:31:16 UTC</span>
+<span id="revdate">2019-12-10 17:12:22 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -452,7 +452,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_introduction">1. Introduction</a></li>
 <li><a href="#_dependency_cycles_headers">2. Dependency Cycles, Headers</a></li>
 <li><a href="#_dependency_cycles_build">3. Dependency Cycles, Build</a></li>
-<li><a href="#_acknowledgments">4. Acknowledgments</a></li>
+<li><a href="#_popularity">4. Popularity</a></li>
+<li><a href="#_acknowledgments">5. Acknowledgments</a></li>
 </ul>
 </div>
 </div>
@@ -490,7 +491,7 @@ and
 the total number of libraries that are involved in cycles ("Libs In Cycles")
 for the library headers of each release.</p>
 </div>
-<div id="cycles_chart_headers" style="height: 500px;"></div>
+<div id="cycles_chart_headers" style="height: 600px;"></div>
 <script type="text/javascript">
 var cycles_chart = echarts.init(document.getElementById('cycles_chart_headers'), null, {renderer: 'svg'});
 cycles_chart.setOption({
@@ -628,7 +629,7 @@ and
 the total number of libraries that are involved in cycles ("Libs In Cycles")
 for building the libraries of each release.</p>
 </div>
-<div id="cycles_chart_build" style="height: 500px;"></div>
+<div id="cycles_chart_build" style="height: 600px;"></div>
 <script type="text/javascript">
 var cycles_chart = echarts.init(document.getElementById('cycles_chart_build'), null, {renderer: 'svg'});
 cycles_chart.setOption({
@@ -757,7 +758,1464 @@ cycles_chart.setOption({
 </div>
 </div>
 <div class="sect1">
-<h2 id="_acknowledgments"><a class="anchor" href="#_acknowledgments"></a>4. Acknowledgments</h2>
+<h2 id="_popularity"><a class="anchor" href="#_popularity"></a>4. Popularity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It&#8217;s interesting to look at how "popular" a library is relative to other libraries.
+It&#8217;s a reasonable way to discern what to put resources on. And possibly to find
+kinds of libraries that users might want. This chart shows the relative popularity
+of Boost libraries and tools. The popularity index is computed to account the
+GitHub "watchers", "forks", and "stars" weighing their relevance in that order.
+The statistics for this graph are current as of the date in this document (above).</p>
+</div>
+<div id="popularity_chart" style="height: 800px; margin-bottom: 1em;"></div>
+<script type="text/javascript">
+var popularity_chart = echarts.init(document.getElementById('popularity_chart'));
+popularity_chart.setOption({
+    title: {
+        text: 'Popularity',
+        subtext: 'GitHub stars, forks, and watchers proportional index.',
+        left: 'center'
+    },
+    tooltip: {
+        formatter: function (info) {
+            if (info.treePathInfo.length == 2) {
+                return [
+                    '<div class="tooltip-title">' + echarts.format.encodeHTML(info.name) + '</div>'
+                    ].join('');
+            } else {
+                return [
+                    '<div class="tooltip-title">' + echarts.format.encodeHTML(info.name) + '</div>',
+                    'Forks: ' + echarts.format.addCommas(info.value[1]) + '<br>',
+                    'Stars: ' + echarts.format.addCommas(info.value[2]) + '<br>',
+                    'Watchers: ' + echarts.format.addCommas(info.value[3]) + '<br>'
+                    ].join('');
+            }
+        }
+    },
+    series: [
+        {
+            name: 'Popularity',
+            type: 'treemap',
+            label: {
+                show: true,
+                formatter: '{b}'
+            },
+            upperLabel: { normal: { show: true, height: 40 } },
+            itemStyle: { normal: { borderColor: '#fff' } },
+            levels: [
+                { itemStyle: { normal: { borderWidth: 0, gapWidth: 5 } } },
+                {   colorSaturation: [0.35, 0.5],
+                    itemStyle: { normal: {
+                        borderWidth: 5, gapWidth: 1, borderColorSaturation: 0.6 } } }
+            ],
+            data:
+[
+    {
+        "children": [
+            {
+                "name": "accumulators",
+                "value": [
+                    88.5,
+                    35,
+                    18,
+                    9
+                ]
+            },
+            {
+                "name": "algorithm",
+                "value": [
+                    224.5,
+                    81,
+                    71,
+                    16
+                ]
+            },
+            {
+                "name": "align",
+                "value": [
+                    56.0,
+                    24,
+                    6,
+                    7
+                ]
+            },
+            {
+                "name": "any",
+                "value": [
+                    82.0,
+                    32,
+                    20,
+                    7
+                ]
+            },
+            {
+                "name": "array",
+                "value": [
+                    77.0,
+                    32,
+                    11,
+                    9
+                ]
+            },
+            {
+                "name": "asio",
+                "value": [
+                    915.0,
+                    212,
+                    467,
+                    65
+                ]
+            },
+            {
+                "name": "assert",
+                "value": [
+                    79.0,
+                    32,
+                    19,
+                    6
+                ]
+            },
+            {
+                "name": "assign",
+                "value": [
+                    75.5,
+                    31,
+                    7,
+                    11
+                ]
+            },
+            {
+                "name": "atomic",
+                "value": [
+                    106.5,
+                    37,
+                    33,
+                    9
+                ]
+            },
+            {
+                "name": "beast",
+                "value": [
+                    3284.0,
+                    400,
+                    2362,
+                    161
+                ]
+            },
+            {
+                "name": "bimap",
+                "value": [
+                    60.0,
+                    26,
+                    11,
+                    5
+                ]
+            },
+            {
+                "name": "bind",
+                "value": [
+                    80.5,
+                    31,
+                    18,
+                    8
+                ]
+            },
+            {
+                "name": "callable_traits",
+                "value": [
+                    156.0,
+                    18,
+                    115,
+                    7
+                ]
+            },
+            {
+                "name": "check_build",
+                "value": [
+                    22.0,
+                    2,
+                    3,
+                    8
+                ]
+            },
+            {
+                "name": "chrono",
+                "value": [
+                    77.0,
+                    36,
+                    11,
+                    6
+                ]
+            },
+            {
+                "name": "circular_buffer",
+                "value": [
+                    109.0,
+                    40,
+                    31,
+                    9
+                ]
+            },
+            {
+                "name": "compatibility",
+                "value": [
+                    30.5,
+                    13,
+                    3,
+                    4
+                ]
+            },
+            {
+                "name": "compose",
+                "value": [
+                    12.0,
+                    2,
+                    1,
+                    4
+                ]
+            },
+            {
+                "name": "compute",
+                "value": [
+                    1641.5,
+                    243,
+                    1055,
+                    111
+                ]
+            },
+            {
+                "name": "concept_check",
+                "value": [
+                    79.0,
+                    30,
+                    12,
+                    11
+                ]
+            },
+            {
+                "name": "config",
+                "value": [
+                    246.0,
+                    118,
+                    33,
+                    18
+                ]
+            },
+            {
+                "name": "container",
+                "value": [
+                    202.5,
+                    81,
+                    59,
+                    11
+                ]
+            },
+            {
+                "name": "container_hash",
+                "value": [
+                    40.5,
+                    13,
+                    5,
+                    8
+                ]
+            },
+            {
+                "name": "context",
+                "value": [
+                    298.5,
+                    83,
+                    130,
+                    22
+                ]
+            },
+            {
+                "name": "contract",
+                "value": [
+                    52.0,
+                    10,
+                    27,
+                    5
+                ]
+            },
+            {
+                "name": "conversion",
+                "value": [
+                    57.5,
+                    25,
+                    8,
+                    6
+                ]
+            },
+            {
+                "name": "convert",
+                "value": [
+                    54.0,
+                    20,
+                    12,
+                    6
+                ]
+            },
+            {
+                "name": "core",
+                "value": [
+                    168.0,
+                    52,
+                    52,
+                    19
+                ]
+            },
+            {
+                "name": "coroutine",
+                "value": [
+                    168.5,
+                    45,
+                    67,
+                    17
+                ]
+            },
+            {
+                "name": "coroutine2",
+                "value": [
+                    150.0,
+                    22,
+                    83,
+                    17
+                ]
+            },
+            {
+                "name": "crc",
+                "value": [
+                    64.0,
+                    28,
+                    10,
+                    6
+                ]
+            },
+            {
+                "name": "date_time",
+                "value": [
+                    146.5,
+                    55,
+                    36,
+                    14
+                ]
+            },
+            {
+                "name": "detail",
+                "value": [
+                    68.5,
+                    33,
+                    5,
+                    7
+                ]
+            },
+            {
+                "name": "disjoint_sets",
+                "value": [
+                    46.5,
+                    13,
+                    5,
+                    11
+                ]
+            },
+            {
+                "name": "dll",
+                "value": [
+                    80.5,
+                    19,
+                    26,
+                    13
+                ]
+            },
+            {
+                "name": "dynamic_bitset",
+                "value": [
+                    97.5,
+                    33,
+                    22,
+                    13
+                ]
+            },
+            {
+                "name": "endian",
+                "value": [
+                    94.0,
+                    30,
+                    31,
+                    9
+                ]
+            },
+            {
+                "name": "exception",
+                "value": [
+                    71.5,
+                    31,
+                    9,
+                    8
+                ]
+            },
+            {
+                "name": "fiber",
+                "value": [
+                    426.5,
+                    67,
+                    274,
+                    26
+                ]
+            },
+            {
+                "name": "filesystem",
+                "value": [
+                    296.5,
+                    121,
+                    83,
+                    16
+                ]
+            },
+            {
+                "name": "flyweight",
+                "value": [
+                    38.0,
+                    14,
+                    5,
+                    6
+                ]
+            },
+            {
+                "name": "foreach",
+                "value": [
+                    52.5,
+                    23,
+                    6,
+                    6
+                ]
+            },
+            {
+                "name": "format",
+                "value": [
+                    83.0,
+                    32,
+                    15,
+                    10
+                ]
+            },
+            {
+                "name": "function",
+                "value": [
+                    105.0,
+                    38,
+                    18,
+                    15
+                ]
+            },
+            {
+                "name": "function_types",
+                "value": [
+                    47.5,
+                    23,
+                    3,
+                    5
+                ]
+            },
+            {
+                "name": "functional",
+                "value": [
+                    87.0,
+                    34,
+                    14,
+                    11
+                ]
+            },
+            {
+                "name": "fusion",
+                "value": [
+                    120.5,
+                    43,
+                    32,
+                    12
+                ]
+            },
+            {
+                "name": "geometry",
+                "value": [
+                    475.5,
+                    119,
+                    229,
+                    34
+                ]
+            },
+            {
+                "name": "gil",
+                "value": [
+                    186.0,
+                    60,
+                    72,
+                    12
+                ]
+            },
+            {
+                "name": "graph",
+                "value": [
+                    359.0,
+                    124,
+                    133,
+                    20
+                ]
+            },
+            {
+                "name": "graph_parallel",
+                "value": [
+                    72.0,
+                    26,
+                    13,
+                    10
+                ]
+            },
+            {
+                "name": "hana",
+                "value": [
+                    1451.5,
+                    135,
+                    1043,
+                    103
+                ]
+            },
+            {
+                "name": "heap",
+                "value": [
+                    70.0,
+                    26,
+                    13,
+                    9
+                ]
+            },
+            {
+                "name": "histogram",
+                "value": [
+                    270.5,
+                    21,
+                    201,
+                    19
+                ]
+            },
+            {
+                "name": "hof",
+                "value": [
+                    642.0,
+                    72,
+                    446,
+                    44
+                ]
+            },
+            {
+                "name": "icl",
+                "value": [
+                    55.0,
+                    26,
+                    6,
+                    5
+                ]
+            },
+            {
+                "name": "integer",
+                "value": [
+                    82.0,
+                    32,
+                    10,
+                    12
+                ]
+            },
+            {
+                "name": "interprocess",
+                "value": [
+                    193.0,
+                    74,
+                    52,
+                    15
+                ]
+            },
+            {
+                "name": "interval",
+                "value": [
+                    76.5,
+                    25,
+                    11,
+                    14
+                ]
+            },
+            {
+                "name": "intrusive",
+                "value": [
+                    100.5,
+                    43,
+                    22,
+                    7
+                ]
+            },
+            {
+                "name": "io",
+                "value": [
+                    53.0,
+                    24,
+                    3,
+                    7
+                ]
+            },
+            {
+                "name": "iostreams",
+                "value": [
+                    162.5,
+                    71,
+                    26,
+                    15
+                ]
+            },
+            {
+                "name": "iterator",
+                "value": [
+                    94.0,
+                    42,
+                    11,
+                    10
+                ]
+            },
+            {
+                "name": "lambda",
+                "value": [
+                    69.5,
+                    27,
+                    13,
+                    8
+                ]
+            },
+            {
+                "name": "lexical_cast",
+                "value": [
+                    76.0,
+                    32,
+                    14,
+                    7
+                ]
+            },
+            {
+                "name": "local_function",
+                "value": [
+                    39.0,
+                    14,
+                    4,
+                    7
+                ]
+            },
+            {
+                "name": "locale",
+                "value": [
+                    86.5,
+                    43,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "lockfree",
+                "value": [
+                    161.0,
+                    52,
+                    59,
+                    12
+                ]
+            },
+            {
+                "name": "log",
+                "value": [
+                    211.5,
+                    61,
+                    84,
+                    18
+                ]
+            },
+            {
+                "name": "logic",
+                "value": [
+                    58.5,
+                    19,
+                    8,
+                    11
+                ]
+            },
+            {
+                "name": "math",
+                "value": [
+                    302.0,
+                    90,
+                    109,
+                    29
+                ]
+            },
+            {
+                "name": "metaparse",
+                "value": [
+                    58.0,
+                    12,
+                    28,
+                    6
+                ]
+            },
+            {
+                "name": "move",
+                "value": [
+                    85.0,
+                    38,
+                    12,
+                    8
+                ]
+            },
+            {
+                "name": "mp11",
+                "value": [
+                    160.0,
+                    22,
+                    101,
+                    13
+                ]
+            },
+            {
+                "name": "mpi",
+                "value": [
+                    133.0,
+                    46,
+                    40,
+                    12
+                ]
+            },
+            {
+                "name": "mpl",
+                "value": [
+                    129.0,
+                    48,
+                    29,
+                    14
+                ]
+            },
+            {
+                "name": "msm",
+                "value": [
+                    86.5,
+                    29,
+                    21,
+                    11
+                ]
+            },
+            {
+                "name": "multi_array",
+                "value": [
+                    59.0,
+                    20,
+                    17,
+                    6
+                ]
+            },
+            {
+                "name": "multi_index",
+                "value": [
+                    100.5,
+                    39,
+                    20,
+                    11
+                ]
+            },
+            {
+                "name": "multiprecision",
+                "value": [
+                    175.5,
+                    61,
+                    50,
+                    17
+                ]
+            },
+            {
+                "name": "nowide",
+                "value": [
+                    126.5,
+                    17,
+                    69,
+                    16
+                ]
+            },
+            {
+                "name": "numeric_conversion",
+                "value": [
+                    63.0,
+                    26,
+                    6,
+                    9
+                ]
+            },
+            {
+                "name": "odeint",
+                "value": [
+                    86.5,
+                    31,
+                    16,
+                    12
+                ]
+            },
+            {
+                "name": "optional",
+                "value": [
+                    132.0,
+                    46,
+                    41,
+                    11
+                ]
+            },
+            {
+                "name": "outcome",
+                "value": [
+                    30.5,
+                    5,
+                    15,
+                    4
+                ]
+            },
+            {
+                "name": "parameter",
+                "value": [
+                    56.0,
+                    24,
+                    8,
+                    6
+                ]
+            },
+            {
+                "name": "parameter_python",
+                "value": [
+                    19.0,
+                    2,
+                    0,
+                    8
+                ]
+            },
+            {
+                "name": "phoenix",
+                "value": [
+                    95.5,
+                    31,
+                    25,
+                    12
+                ]
+            },
+            {
+                "name": "poly_collection",
+                "value": [
+                    87.0,
+                    14,
+                    50,
+                    8
+                ]
+            },
+            {
+                "name": "polygon",
+                "value": [
+                    85.0,
+                    28,
+                    21,
+                    11
+                ]
+            },
+            {
+                "name": "pool",
+                "value": [
+                    101.5,
+                    31,
+                    27,
+                    14
+                ]
+            },
+            {
+                "name": "predef",
+                "value": [
+                    134.0,
+                    52,
+                    32,
+                    12
+                ]
+            },
+            {
+                "name": "preprocessor",
+                "value": [
+                    122.0,
+                    44,
+                    38,
+                    9
+                ]
+            },
+            {
+                "name": "process",
+                "value": [
+                    142.0,
+                    48,
+                    46,
+                    12
+                ]
+            },
+            {
+                "name": "program_options",
+                "value": [
+                    186.0,
+                    72,
+                    56,
+                    11
+                ]
+            },
+            {
+                "name": "property_map",
+                "value": [
+                    57.0,
+                    18,
+                    8,
+                    11
+                ]
+            },
+            {
+                "name": "property_tree",
+                "value": [
+                    121.5,
+                    55,
+                    23,
+                    8
+                ]
+            },
+            {
+                "name": "proto",
+                "value": [
+                    73.0,
+                    26,
+                    12,
+                    11
+                ]
+            },
+            {
+                "name": "ptr_container",
+                "value": [
+                    64.5,
+                    21,
+                    9,
+                    12
+                ]
+            },
+            {
+                "name": "python",
+                "value": [
+                    494.5,
+                    143,
+                    236,
+                    22
+                ]
+            },
+            {
+                "name": "qvm",
+                "value": [
+                    81.0,
+                    18,
+                    40,
+                    7
+                ]
+            },
+            {
+                "name": "random",
+                "value": [
+                    127.0,
+                    48,
+                    27,
+                    14
+                ]
+            },
+            {
+                "name": "range",
+                "value": [
+                    182.5,
+                    77,
+                    35,
+                    16
+                ]
+            },
+            {
+                "name": "ratio",
+                "value": [
+                    51.0,
+                    22,
+                    6,
+                    6
+                ]
+            },
+            {
+                "name": "rational",
+                "value": [
+                    79.5,
+                    25,
+                    16,
+                    13
+                ]
+            },
+            {
+                "name": "regex",
+                "value": [
+                    173.5,
+                    65,
+                    42,
+                    17
+                ]
+            },
+            {
+                "name": "safe_numerics",
+                "value": [
+                    215.0,
+                    22,
+                    152,
+                    15
+                ]
+            },
+            {
+                "name": "scope_exit",
+                "value": [
+                    53.5,
+                    17,
+                    10,
+                    9
+                ]
+            },
+            {
+                "name": "serialization",
+                "value": [
+                    248.0,
+                    100,
+                    60,
+                    19
+                ]
+            },
+            {
+                "name": "signals",
+                "value": [
+                    52.5,
+                    17,
+                    7,
+                    10
+                ]
+            },
+            {
+                "name": "signals2",
+                "value": [
+                    109.0,
+                    36,
+                    35,
+                    10
+                ]
+            },
+            {
+                "name": "smart_ptr",
+                "value": [
+                    249.5,
+                    89,
+                    82,
+                    17
+                ]
+            },
+            {
+                "name": "sort",
+                "value": [
+                    64.5,
+                    15,
+                    22,
+                    10
+                ]
+            },
+            {
+                "name": "spirit",
+                "value": [
+                    459.5,
+                    115,
+                    217,
+                    35
+                ]
+            },
+            {
+                "name": "stacktrace",
+                "value": [
+                    280.5,
+                    25,
+                    193,
+                    25
+                ]
+            },
+            {
+                "name": "statechart",
+                "value": [
+                    60.0,
+                    24,
+                    12,
+                    6
+                ]
+            },
+            {
+                "name": "static_assert",
+                "value": [
+                    66.0,
+                    28,
+                    10,
+                    7
+                ]
+            },
+            {
+                "name": "sync",
+                "value": [
+                    45.5,
+                    11,
+                    13,
+                    8
+                ]
+            },
+            {
+                "name": "system",
+                "value": [
+                    124.0,
+                    58,
+                    17,
+                    10
+                ]
+            },
+            {
+                "name": "test",
+                "value": [
+                    300.5,
+                    117,
+                    89,
+                    18
+                ]
+            },
+            {
+                "name": "thread",
+                "value": [
+                    402.5,
+                    139,
+                    142,
+                    26
+                ]
+            },
+            {
+                "name": "throw_exception",
+                "value": [
+                    71.5,
+                    31,
+                    7,
+                    9
+                ]
+            },
+            {
+                "name": "timer",
+                "value": [
+                    67.5,
+                    25,
+                    12,
+                    9
+                ]
+            },
+            {
+                "name": "tokenizer",
+                "value": [
+                    74.0,
+                    26,
+                    11,
+                    12
+                ]
+            },
+            {
+                "name": "tr1",
+                "value": [
+                    35.0,
+                    12,
+                    5,
+                    6
+                ]
+            },
+            {
+                "name": "tti",
+                "value": [
+                    38.0,
+                    16,
+                    2,
+                    6
+                ]
+            },
+            {
+                "name": "tuple",
+                "value": [
+                    78.0,
+                    32,
+                    12,
+                    9
+                ]
+            },
+            {
+                "name": "type_erasure",
+                "value": [
+                    48.5,
+                    19,
+                    6,
+                    7
+                ]
+            },
+            {
+                "name": "type_index",
+                "value": [
+                    80.0,
+                    32,
+                    18,
+                    7
+                ]
+            },
+            {
+                "name": "type_traits",
+                "value": [
+                    162.5,
+                    63,
+                    42,
+                    13
+                ]
+            },
+            {
+                "name": "typeof",
+                "value": [
+                    65.5,
+                    31,
+                    7,
+                    6
+                ]
+            },
+            {
+                "name": "ublas",
+                "value": [
+                    191.0,
+                    72,
+                    53,
+                    15
+                ]
+            },
+            {
+                "name": "units",
+                "value": [
+                    95.0,
+                    38,
+                    20,
+                    9
+                ]
+            },
+            {
+                "name": "unordered",
+                "value": [
+                    56.0,
+                    24,
+                    8,
+                    6
+                ]
+            },
+            {
+                "name": "utility",
+                "value": [
+                    138.5,
+                    53,
+                    29,
+                    15
+                ]
+            },
+            {
+                "name": "uuid",
+                "value": [
+                    140.5,
+                    43,
+                    42,
+                    17
+                ]
+            },
+            {
+                "name": "variant",
+                "value": [
+                    121.5,
+                    49,
+                    32,
+                    8
+                ]
+            },
+            {
+                "name": "variant2",
+                "value": [
+                    75.0,
+                    8,
+                    49,
+                    7
+                ]
+            },
+            {
+                "name": "vmd",
+                "value": [
+                    20.5,
+                    5,
+                    5,
+                    4
+                ]
+            },
+            {
+                "name": "wave",
+                "value": [
+                    64.5,
+                    25,
+                    11,
+                    8
+                ]
+            },
+            {
+                "name": "winapi",
+                "value": [
+                    116.0,
+                    32,
+                    40,
+                    14
+                ]
+            },
+            {
+                "name": "xpressive",
+                "value": [
+                    54.0,
+                    18,
+                    13,
+                    7
+                ]
+            },
+            {
+                "name": "yap",
+                "value": [
+                    132.5,
+                    17,
+                    93,
+                    7
+                ]
+            }
+        ],
+        "name": "Libraries",
+        "value": 24579.5
+    },
+    {
+        "children": [
+            {
+                "name": "auto_index",
+                "value": [
+                    29.0,
+                    10,
+                    4,
+                    5
+                ]
+            },
+            {
+                "name": "bcp",
+                "value": [
+                    41.5,
+                    17,
+                    4,
+                    6
+                ]
+            },
+            {
+                "name": "boostbook",
+                "value": [
+                    44.0,
+                    16,
+                    6,
+                    7
+                ]
+            },
+            {
+                "name": "boostdep",
+                "value": [
+                    45.0,
+                    14,
+                    8,
+                    8
+                ]
+            },
+            {
+                "name": "bpm",
+                "value": [
+                    22.0,
+                    0,
+                    8,
+                    7
+                ]
+            },
+            {
+                "name": "build",
+                "value": [
+                    477.5,
+                    179,
+                    147,
+                    31
+                ]
+            },
+            {
+                "name": "docca",
+                "value": [
+                    19.5,
+                    5,
+                    6,
+                    3
+                ]
+            },
+            {
+                "name": "inspect",
+                "value": [
+                    35.5,
+                    13,
+                    4,
+                    6
+                ]
+            },
+            {
+                "name": "litre",
+                "value": [
+                    24.0,
+                    10,
+                    3,
+                    3
+                ]
+            },
+            {
+                "name": "quickbook",
+                "value": [
+                    41.5,
+                    13,
+                    6,
+                    8
+                ]
+            }
+        ],
+        "name": "Tools",
+        "value": 779.5
+    }
+]
+        }
+    ]
+});
+</script>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Use the mouse/touch to move the graph. And use the scroll wheel / pinch to zoom.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_acknowledgments"><a class="anchor" href="#_acknowledgments"></a>5. Acknowledgments</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This document would not be possible without the fantastic work by Peter Dimov
