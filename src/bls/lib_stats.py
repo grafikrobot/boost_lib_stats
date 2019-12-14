@@ -69,13 +69,22 @@ class LibraryStats(Commands):
             'auto_index', 'bcp', 'boostbook', 'boostdep', 'bpm', 'build',
             'docca', 'inspect', 'litre', 'quickbook'])
         tools = []
-        tools_value = 0
+        tools_value = [0,0,0,0]
         libs = []
-        libs_value = 0
+        libs_value = [0,0,0,0]
 
         for lib in sorted(lib_data.github_info.keys()):
+            sum_value = None
+            if lib in tool_names:
+                sum_value = tools_value
+            else:
+                sum_value = libs_value
             gh_info = lib_data.github_info[lib]
             pop_value = pop_index(gh_info)
+            sum_value[0] += pop_value
+            sum_value[1] += gh_info['forks']
+            sum_value[2] += gh_info['stars']
+            sum_value[3] += gh_info['watchers']
             entry = {
                 'name': lib,
                 'value': [
@@ -85,10 +94,8 @@ class LibraryStats(Commands):
                     gh_info['watchers']]}
             if lib in tool_names:
                 tools.append(entry)
-                tools_value += pop_value
             else:
                 libs.append(entry)
-                libs_value += pop_value
         self.pop_index_table.append({
             'name': 'Libraries',
             'value': libs_value,

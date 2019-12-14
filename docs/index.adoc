@@ -229,18 +229,13 @@ popularity_chart.setOption({
     },
     tooltip: {
         formatter: function (info) {
-            if (info.treePathInfo.length == 2) {
-                return [
-                    '<div class="tooltip-title">' + echarts.format.encodeHTML(info.name) + '</div>'
-                    ].join('');
-            } else {
-                return [
-                    '<div class="tooltip-title">' + echarts.format.encodeHTML(info.name) + '</div>',
-                    'Forks: ' + echarts.format.addCommas(info.value[1]) + '<br>',
-                    'Stars: ' + echarts.format.addCommas(info.value[2]) + '<br>',
-                    'Watchers: ' + echarts.format.addCommas(info.value[3]) + '<br>'
-                    ].join('');
-            }
+            return [
+                '<div style="font-weight: bolder; border-bottom: 1px dotted white;">' +
+                    echarts.format.encodeHTML(info.name) + '</div>',
+                'Forks: ' + echarts.format.addCommas(info.value[1]) + '<br>',
+                'Stars: ' + echarts.format.addCommas(info.value[2]) + '<br>',
+                'Watchers: ' + echarts.format.addCommas(info.value[3]) + '<br>'
+                ].join('');
         }
     },
     series: [
@@ -251,13 +246,25 @@ popularity_chart.setOption({
                 show: true,
                 formatter: '{b}'
             },
-            upperLabel: { normal: { show: true, height: 40 } },
-            itemStyle: { normal: { borderColor: '#fff' } },
             levels: [
-                { itemStyle: { normal: { borderWidth: 0, gapWidth: 5 } } },
-                {   colorSaturation: [0.35, 0.5],
-                    itemStyle: { normal: {
-                        borderWidth: 5, gapWidth: 1, borderColorSaturation: 0.6 } } }
+                {
+                    // Root
+                    itemStyle: { normal: { gapWidth: 2 } },
+                    color: [ '#6a6' ],
+                },
+                {
+                    // Libraries and Tools nodes.
+                    upperLabel: { normal: { show: true, height: 40, fontWeight: 'bolder' } },
+                    itemStyle: {
+                        normal: { borderColor: '#555', borderWidth: 5, gapWidth: 2 },
+                        emphasis: { borderColor: '#777' }
+                    },
+                    visualDimension: 2,
+                    colorSaturation: [0.2, 0.6],
+                },
+                {
+                    // Individual lib/tools nodes.
+                }
             ],
             data:
 include::popstats.json[]
