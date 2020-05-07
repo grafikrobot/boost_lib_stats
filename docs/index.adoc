@@ -48,7 +48,7 @@ the total number of libraries that are involved in cycles ("Libs In Cycles")
 for the library headers of each release.
 
 ++++
-<div id="cycles_chart_headers" style="height: 600px;"></div>
+<div id="cycles_chart_headers" style="height: 630px;"></div>
 <script type="text/javascript">
 var cycles_chart = echarts.init(document.getElementById('cycles_chart_headers'), null, {renderer: 'svg'});
 cycles_chart.setOption({
@@ -94,7 +94,7 @@ the total number of libraries that are involved in cycles ("Libs In Cycles")
 for building the libraries of each release.
 
 ++++
-<div id="cycles_chart_build" style="height: 600px;"></div>
+<div id="cycles_chart_build" style="height: 630px;"></div>
 <script type="text/javascript">
 var cycles_chart = echarts.init(document.getElementById('cycles_chart_build'), null, {renderer: 'svg'});
 cycles_chart.setOption({
