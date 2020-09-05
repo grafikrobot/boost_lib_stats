@@ -95,7 +95,7 @@ class CIBuild(Main):
                         '++json=%s' % (ranks_build_file), '++buildable'
                     ])
 
-            version_range = (57, 73)
+            version_range = (57, 74)
 
             if self.args.build_data:
                 gen_lib_data(branch='develop', rebuild=True)
