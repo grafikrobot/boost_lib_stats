@@ -21,7 +21,7 @@ jobs:
         with: { python-version: "3.x" }
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
-        with: { ruby-version: "3.0.x" }
+        with: { ruby-version: "3.0" }
       - name: "Cache"
         uses: actions/cache@v2
         with:
