@@ -9,6 +9,8 @@ name: Boost Stats
 on:
   push:
     branches: ["master"]
+  schedule:
+    - cron: '7 0 * * *'
 
 jobs:
   build_data:
@@ -36,6 +38,8 @@ jobs:
           export PYTHONPATH=${PWD}/src
           ./src/script/git_switch.py ++root=${HOME}/devcache/boost_lib_stats/boost_root ++branch=develop
       - name: "Website Update"
+        env:
+          GH_TOKEN: ${{ secrets.GHA_TOKEN }}
         run: |
           set -e
           uname -a
