@@ -3,3 +3,4 @@
 *.pyc
 docs/*.json
 /.build/
+*.egg-info
