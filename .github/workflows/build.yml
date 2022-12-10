@@ -22,6 +22,8 @@ jobs:
       - { name: "Set up Ruby", uses: ruby/setup-ruby@v1, with: { ruby-version: "3.0" } }
       - { name: "Cache", uses: actions/cache@main, with: { path: "~/devcache", key: "${{ runner.os }}-build" } }
       - name: "Build Data"
+        env:
+          GH_TOKEN: ${{ secrets.GHA_TOKEN }}
         run: |
           export PYTHONPATH=${PWD}/src
           ./src/script/ci_build.py ++bin-dir=${HOME}/devcache/boost_lib_stats ++build-data
@@ -30,6 +32,8 @@ jobs:
           export PYTHONPATH=${PWD}/src
           ./src/script/git_switch.py ++root=${HOME}/devcache/boost_lib_stats/boost_root ++branch=develop
       - name: "Website Update"
+        env:
+          GH_TOKEN: ${{ secrets.GHA_TOKEN }}
         run: |
           set -e
           uname -a
