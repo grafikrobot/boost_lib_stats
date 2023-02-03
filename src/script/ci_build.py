@@ -95,17 +95,17 @@ class CIBuild(Main):
                         '++json=%s' % (ranks_build_file), '++buildable'
                     ])
 
-            version_range = (57, 79)
+            version_range = (57, 81)
 
             if self.args.build_data:
                 gen_lib_data(branch='develop', rebuild=True)
                 gen_lib_data(branch='master', rebuild=True)
                 for v in range(version_range[0], version_range[1] + 1):
                     gen_lib_data(tag='boost-1.%s.0' % (v))
-                self.__check_call__([
-                    gen_lib_ghdata_py,
-                    '++json=%s' % (os.path.join(data_dir, 'ghdata.json'))
-                ])
+                # self.__check_call__([
+                #     gen_lib_ghdata_py,
+                #     '++json=%s' % (os.path.join(data_dir, 'ghdata.json'))
+                # ])
 
             if self.args.website_update:
                 self.__check_call__([
