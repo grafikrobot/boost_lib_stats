@@ -1,5 +1,5 @@
 """
-    Copyright (C) 2018-2019 Rene Rivera.
+    Copyright (C) 2018-2023 René Ferdinand Rivera Morell.
     Use, modification and distribution are subject to the
     Boost Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -166,7 +166,7 @@ class LibraryData(Commands):
             req = urllib.request.Request(
                 'https://api.github.com/graphql',
                 data,
-                headers={'Authorization': 'bearer %s' % (gh_token)})
+                headers={'Authorization': 'token %s' % (gh_token)})
             resp = urllib.request.urlopen(req)
             resp_data = resp.read()
             data = json.loads(resp_data.decode())
